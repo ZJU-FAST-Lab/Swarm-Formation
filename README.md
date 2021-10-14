@@ -13,7 +13,7 @@ Related Paper:
 [Distributed Swarm Trajectory Optimization for Formation Flight in Dense Environments](https://arxiv.org/abs/2109.07682), Lun Quan, Longji Yin, Chao Xu, and Fei Gao. This paper has been submitted to [ICRA2022](https://www.icra2022.org/).
 Please cite our paper if you use this project in your research:
 ```
-@misc{quan2021distributed,
+@article{quan2021distributed,
       title={Distributed Swarm Trajectory Optimization for Formation Flight in Dense Environments}, 
       author={Lun Quan and Longji Yin and Chao Xu and Fei Gao},
       journal={arXiv preprint arXiv:2109.07682},
