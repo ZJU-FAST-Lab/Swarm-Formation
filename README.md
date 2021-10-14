@@ -4,7 +4,7 @@
 - To be open-sourced.
 
 Video Links(the part of real-world experiments will be disclosed soon): 
-[YOUtube](https://www.youtube.com/watch?v=lFumt0rJci4) or [Bilibili](https://www.bilibili.com/video/BV1qv41137Si?spm_id_from=333.999.0.0) (only forMainland China).
+[Youtube](https://www.youtube.com/watch?v=lFumt0rJci4) or [Bilibili](https://www.bilibili.com/video/BV1qv41137Si?spm_id_from=333.999.0.0) (only forMainland China).
 
 # About
 Author: [Lun Quan](https://scholar.google.com.hk/citations?user=PNIk-DEAAAAJ&hl=zh-CN), Longji Ying, and [Fei Gao](https://ustfei.com/) from [ZJU FAST Lab](http://zju-fast.com/).
