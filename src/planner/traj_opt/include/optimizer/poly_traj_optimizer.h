@@ -103,11 +103,9 @@ namespace ego_planner
     double wei_sqrvar_;                      // squared variance weight
     double wei_time_;                        // time weight
     double wei_formation_;                   // swarm formation simllarity
-    double wei_gather_;                      // swarm gathering penalty
     
     double obs_clearance_;                   // safe distance between uav and obstacles
     double swarm_clearance_;                 // safe distance between uav and uav
-    double swarm_gather_threshold_;          // threshold distance between uav and swarm center
     double max_vel_, max_acc_;               // dynamic limits
     
     int    formation_type_;
@@ -197,16 +195,6 @@ namespace ego_planner
                              double &grad_prev_t,
                              double &costp);
     
-    bool swarmGatherCostGradP(const int i_dp,
-                              const double t,
-                              const Eigen::Vector3d &p,
-                              const Eigen::Vector3d &v,
-                              Eigen::Vector3d &gradp,
-                              double &gradt,
-                              double &grad_prev_t,
-                              double &costp);
-
-
     bool feasibilityGradCostV(const Eigen::Vector3d &v,
                               Eigen::Vector3d &gradv,
                               double &costv);

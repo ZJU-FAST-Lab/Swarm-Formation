@@ -42,11 +42,8 @@
   <arg name="weight_sqrvariance"/>
   <arg name="weight_time"/>
   <arg name="weight_formation"/>
-  <arg name="weight_gather"/>
   <arg name="obstacle_clearance"/>
   <arg name="swarm_clearance"/>
-  <arg name="swarm_gather_threshold"/>
-  <arg name="formation_method_type"/>
   
   <!-- main node -->
   <!-- <node pkg="ego_planner" name="ego_planner_node" type="ego_planner_node" output="screen" launch-prefix="valgrind"> -->
@@ -157,16 +154,13 @@
     <param name="optimization/weight_sqrvariance"           value="$(arg weight_sqrvariance)"/>
     <param name="optimization/weight_time"                  value="$(arg weight_time)"/>
     <param name="optimization/weight_formation"             value="$(arg weight_formation)"/>
-    <param name="optimization/weight_gather"                value="$(arg weight_gather)"/>
     
     <param name="optimization/obstacle_clearance"           value="$(arg obstacle_clearance)"/>
     <param name="optimization/swarm_clearance"              value="$(arg swarm_clearance)"/>
-    <param name="optimization/swarm_gather_threshold"       value="$(arg swarm_gather_threshold)"/>
     
     <param name="optimization/max_vel"                      value="$(arg max_vel)" type="double"/>
     <param name="optimization/max_acc"                      value="$(arg max_acc)" type="double"/>
     <param name="optimization/formation_type"               value="$(arg formation_type)"/>
-    <param name="optimization/formation_method_type"        value="$(arg formation_method_type)"/>
     
     <param name="optimization/record_opt" value="true"/>
 

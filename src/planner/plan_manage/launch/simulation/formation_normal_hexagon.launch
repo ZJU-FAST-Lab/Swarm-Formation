@@ -16,11 +16,9 @@
                 weight_sqrvariance
                 weight_time
                 weight_formation
-                weight_gather
             threshold and clearance:
                 obstacle_clearance
                 swarm_clearance
-                swarm_gather_threshold
      -->
     <arg name="weight_obstacle"         value="50000.0"/>
     <arg name="weight_swarm"            value="2500.0"/>
@@ -32,15 +30,6 @@
 
     <arg name="obstacle_clearance"      value="0.5"/>
     <arg name="swarm_clearance"         value="0.5"/>
-    <arg name="swarm_gather_threshold"  value="13.0"/>
-    
-    <!-- 
-        0: (default) swarm-graph-based
-        1: leader-follow position-based
-        2: relative position-based
-        3: VRB formation control method
-     -->
-    <arg name="formation_method_type"   value="0"/>
     
     <!-- swarm topic transmitter bridge-->
     <include file="$(find swarm_bridge)/launch/bridge.launch">
@@ -95,11 +84,8 @@
         <arg name="weight_sqrvariance"      value="$(arg weight_sqrvariance)"/>
         <arg name="weight_time"             value="$(arg weight_time)"/>
         <arg name="weight_formation"        value="$(arg weight_formation)"/>
-        <arg name="weight_gather"           value="$(arg weight_gather)"/>
         <arg name="obstacle_clearance"      value="$(arg obstacle_clearance)"/>
         <arg name="swarm_clearance"         value="$(arg swarm_clearance)"/>
-        <arg name="swarm_gather_threshold"  value="$(arg swarm_gather_threshold)"/>
-        <arg name="formation_method_type"   value="$(arg formation_method_type)"/>
         
     </include>
 
@@ -126,11 +112,8 @@
         <arg name="weight_sqrvariance"      value="$(arg weight_sqrvariance)"/>
         <arg name="weight_time"             value="$(arg weight_time)"/>
         <arg name="weight_formation"        value="$(arg weight_formation)"/>
-        <arg name="weight_gather"           value="$(arg weight_gather)"/>
         <arg name="obstacle_clearance"      value="$(arg obstacle_clearance)"/>
         <arg name="swarm_clearance"         value="$(arg swarm_clearance)"/>
-        <arg name="swarm_gather_threshold"  value="$(arg swarm_gather_threshold)"/>
-        <arg name="formation_method_type"   value="$(arg formation_method_type)"/>
         
     </include>
 
@@ -156,11 +139,8 @@
         <arg name="weight_sqrvariance"      value="$(arg weight_sqrvariance)"/>
         <arg name="weight_time"             value="$(arg weight_time)"/>
         <arg name="weight_formation"        value="$(arg weight_formation)"/>
-        <arg name="weight_gather"           value="$(arg weight_gather)"/>
         <arg name="obstacle_clearance"      value="$(arg obstacle_clearance)"/>
         <arg name="swarm_clearance"         value="$(arg swarm_clearance)"/>
-        <arg name="swarm_gather_threshold"  value="$(arg swarm_gather_threshold)"/>
-        <arg name="formation_method_type"   value="$(arg formation_method_type)"/>
     </include>
 
     <include file="$(find ego_planner)/launch/run_in_sim.launch">
@@ -185,11 +165,8 @@
         <arg name="weight_sqrvariance"      value="$(arg weight_sqrvariance)"/>
         <arg name="weight_time"             value="$(arg weight_time)"/>
         <arg name="weight_formation"        value="$(arg weight_formation)"/>
-        <arg name="weight_gather"           value="$(arg weight_gather)"/>
         <arg name="obstacle_clearance"      value="$(arg obstacle_clearance)"/>
         <arg name="swarm_clearance"         value="$(arg swarm_clearance)"/>
-        <arg name="swarm_gather_threshold"  value="$(arg swarm_gather_threshold)"/>
-        <arg name="formation_method_type"   value="$(arg formation_method_type)"/>
 
     </include>
     
@@ -215,11 +192,8 @@
         <arg name="weight_sqrvariance"      value="$(arg weight_sqrvariance)"/>
         <arg name="weight_time"             value="$(arg weight_time)"/>
         <arg name="weight_formation"        value="$(arg weight_formation)"/>
-        <arg name="weight_gather"           value="$(arg weight_gather)"/>
         <arg name="obstacle_clearance"      value="$(arg obstacle_clearance)"/>
         <arg name="swarm_clearance"         value="$(arg swarm_clearance)"/>
-        <arg name="swarm_gather_threshold"  value="$(arg swarm_gather_threshold)"/>
-        <arg name="formation_method_type"   value="$(arg formation_method_type)"/>
 
     </include>
 
@@ -245,11 +219,8 @@
         <arg name="weight_sqrvariance"      value="$(arg weight_sqrvariance)"/>
         <arg name="weight_time"             value="$(arg weight_time)"/>
         <arg name="weight_formation"        value="$(arg weight_formation)"/>
-        <arg name="weight_gather"           value="$(arg weight_gather)"/>
         <arg name="obstacle_clearance"      value="$(arg obstacle_clearance)"/>
         <arg name="swarm_clearance"         value="$(arg swarm_clearance)"/>
-        <arg name="swarm_gather_threshold"  value="$(arg swarm_gather_threshold)"/>
-        <arg name="formation_method_type"   value="$(arg formation_method_type)"/>
 
     </include>
 
@@ -275,11 +246,8 @@
         <arg name="weight_sqrvariance"      value="$(arg weight_sqrvariance)"/>
         <arg name="weight_time"             value="$(arg weight_time)"/>
         <arg name="weight_formation"        value="$(arg weight_formation)"/>
-        <arg name="weight_gather"           value="$(arg weight_gather)"/>
         <arg name="obstacle_clearance"      value="$(arg obstacle_clearance)"/>
         <arg name="swarm_clearance"         value="$(arg swarm_clearance)"/>
-        <arg name="swarm_gather_threshold"  value="$(arg swarm_gather_threshold)"/>
-        <arg name="formation_method_type"   value="$(arg formation_method_type)"/>
 
     </include>
 

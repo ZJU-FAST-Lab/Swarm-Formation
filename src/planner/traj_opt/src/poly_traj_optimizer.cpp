@@ -276,9 +276,8 @@ namespace ego_planner
           costs(1) += omg * step * costp;
         }
 
-        /* Formation method chosing */
+        // formation
         if (use_formation_){
-          // deformale formation
           if (swarmGraphGradCostP(i_dp, t + step * j, pos, vel, gradp, gradt, grad_prev_t, costp)){
             gradViolaPc = beta0 * gradp.transpose();
             gradViolaPt = alpha * gradt;
@@ -289,22 +288,9 @@ namespace ego_planner
               gdT.head(i).array() += omg * step * grad_prev_t;
               }
               costs(2) += omg * step * costp;
-            }
-            
-          // swarm gathering
-          if (swarmGatherCostGradP(i_dp, t + step * j, pos, vel, gradp, gradt, grad_prev_t, costp)){
-            gradViolaPc = beta0 * gradp.transpose();
-            gradViolaPt = alpha * gradt;
-            jerkOpt_.get_gdC().block<6, 3>(i * 6, 0) += omg * step * gradViolaPc;
-            gdT(i) += omg * (costp / K + step * gradViolaPt);
-            if (i > 0)
-            {
-              gdT.head(i).array() += omg * step * grad_prev_t;
-            }
-            costs(3) += omg * step * costp;
           }
         }
-                
+        
         // feasibility
         if (feasibilityGradCostV(vel, gradv, costv))
         {
@@ -383,9 +369,6 @@ namespace ego_planner
                                              double &grad_prev_t,
                                              double &costp)
   {
-    // wait all the drones have trajectories
-    // if (swarm_trajs_->size() < formation_size_ && drone_id_ != formation_size_-1)
-    //   return false;
     if (i_dp <= 0 || i_dp >= cps_.cp_size * 2 / 3)
       return false;
 
@@ -393,6 +376,7 @@ namespace ego_planner
     if (drone_id_ == formation_size_ - 1)
       size = formation_size_;
     
+    // wait all the drones have trajectories
     if (size < formation_size_)
       return false;
 
@@ -444,13 +428,10 @@ namespace ego_planner
     if (similarity_error > 0){
       ret = true;
     
-      // double similarity_error2 = similarity_error * similarity_error;
-      // double similarity_error3 = similarity_error2 * similarity_error;
-    
       costp = wei_formation_ * similarity_error;
       vector<Eigen::Vector3d> swarm_grad;
       swarm_graph_->getGrad(swarm_grad);
-      // double dJ_df = wei_formation_ * 3 * similarity_error2;
+
       gradp  = wei_formation_ * swarm_grad[drone_id_];
 
       for (size_t id=0; id<size; id++){
@@ -460,102 +441,6 @@ namespace ego_planner
       }
     }
 
-    return ret;
-  }
-
-  bool PolyTrajOptimizer::swarmGatherCostGradP(const int i_dp,
-                                               const double t,
-                                               const Eigen::Vector3d &p,
-                                               const Eigen::Vector3d &v,
-                                               Eigen::Vector3d &gradp,
-                                               double &gradt,
-                                               double &grad_prev_t,
-                                               double &costp)
-  {
-    // there is a bug still need to fix: when drone_id = formation_size_ - 1, 
-    // swarm_trajs_->size() = formation_size_ -1 but not swarm_trajs_->size() = formation_size_
-    if (i_dp <= 0 || i_dp >= cps_.cp_size * 2 / 3)
-      return false;
-    
-    int size = swarm_trajs_->size();
-    if (drone_id_ == formation_size_ - 1)
-      size = formation_size_;
-    
-    if (size < formation_size_)
-      return false;
-
-    // for the formation problem, we may optimize the whole trajectory ? 
-    if (i_dp <= 0 || i_dp >= cps_.cp_size * 2 / 3)
-      return false;
-    
-    // init
-    bool ret = false;
-    gradp.setZero();
-    gradt = 0;
-    grad_prev_t = 0;
-    costp = 0;
-
-    // get the swarm pos and vel
-    Eigen::Vector3d center_pos = Eigen::Vector3d::Zero();
-    double pt_time = t_now_ + t;
-    vector<Eigen::Vector3d> swarm_graph_pos(formation_size_), swarm_graph_vel(formation_size_);
-    swarm_graph_pos[drone_id_] = p;
-    swarm_graph_vel[drone_id_] = v;
-
-    for (size_t id = 0; id < size; id++){
-      if (id == drone_id_)
-        continue;
-      
-      double traj_i_satrt_time = swarm_trajs_->at(id).start_time;
-      Eigen::Vector3d swarm_p, swarm_v;
-      if (pt_time < traj_i_satrt_time + swarm_trajs_->at(id).duration)
-      {
-        swarm_p = swarm_trajs_->at(id).traj.getPos(pt_time - traj_i_satrt_time);
-        swarm_v = swarm_trajs_->at(id).traj.getVel(pt_time - traj_i_satrt_time);
-      }
-      else
-      {
-        double exceed_time = pt_time - (traj_i_satrt_time + swarm_trajs_->at(id).duration);
-        swarm_v = swarm_trajs_->at(id).traj.getVel(swarm_trajs_->at(id).duration);
-        swarm_p = swarm_trajs_->at(id).traj.getPos(swarm_trajs_->at(id).duration) +
-                  exceed_time * swarm_v;
-      }
-      swarm_graph_pos[id] = swarm_p;
-      swarm_graph_vel[id] = swarm_v;
-    }
-
-    double alpha1 = double(1.0 - formation_size_)/double(formation_size_);
-    double alpha2 = double(1.0/formation_size_);
-
-    for (size_t id = 0; id < size; id++)
-      center_pos += swarm_graph_pos[id];
-    
-    center_pos = center_pos * alpha2;
-
-    // calculate the swarm gathering cost and grad
-    const double CLEARANCE2  = swarm_gather_threshold_ * swarm_gather_threshold_ ;
-    Eigen::Vector3d dist_vec = center_pos - p;
-    double dist2        = dist_vec.norm() * dist_vec.norm();
-    double dist_error   = dist2 - CLEARANCE2;
-    double dist_error2  = dist_error * dist_error;
-    double dist_error3  = dist_error2 * dist_error;
-    ret = true;
-
-    if (dist_error3 > 0){
-      costp  = wei_gather_ * dist_error3;
-      double dJ_df = wei_gather_ * 3 * dist_error2;
-      gradp = dJ_df * 2 * alpha1 * dist_vec;
-      
-      for (size_t id=0; id<size; id++){
-        if (id == drone_id_)
-          gradt += dJ_df * 2 * alpha1 * dist_vec.dot(swarm_graph_vel[id]);
-        else
-          gradt += dJ_df * 2 * alpha2 * dist_vec.dot(swarm_graph_vel[id]);
-
-        if (id != drone_id_)
-          grad_prev_t += dJ_df * 2 * alpha2 * dist_vec.dot(swarm_graph_vel[id]);
-      }
-    }
     return ret;
   }
   
@@ -748,17 +633,6 @@ namespace ego_planner
 
     frontendMJ.reset(iniState, finState, piece_num);
 
-    // debug
-    // cout <<"----------------" << endl;
-    // cout << "iniState : " << iniState.col(0).transpose() << endl;
-    // cout << "finState : " << finState.col(0).transpose() << endl;
-    // cout << "piece_num : " << piece_num << endl;
-    // cout << "simple_path : " << endl;
-    // for (int k=0; k<simple_path.size();k++){
-    //   cout <<  simple_path[k].transpose() << endl;
-    // }
-    // cout << "innerPts : " << innerPts << endl;
-
     /* generate init traj*/
     double des_vel = max_vel_;
     Eigen::VectorXd time_vec(piece_num);
@@ -774,26 +648,12 @@ namespace ego_planner
       debug_num++;
       des_vel /= 1.5;
     } while (frontendMJ.getTraj().getMaxVelRate() > max_vel_ && debug_num < 1);
-
-    // debug
-    // if (frontendMJ.getTraj().getMaxVelRate() > max_vel_){
-    //   cout << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
-    //   int num = simple_path.size();
-    //   cout << "path : " << endl;
-    //   for (int i=0; i< num; i++)
-    //     cout << simple_path[i].transpose() << "  ";
-    //   cout << endl;
-    //   cout << "time_vec : " << time_vec.transpose() << endl;
-    //   cout << "max vel : " << frontendMJ.getTraj().getMaxVelRate() << endl;
-    // }
     
     poly_traj::Trajectory traj;
     traj = frontendMJ.getTraj();
 
     ctl_points = frontendMJ.getInitConstrainPoints(cps_num_prePiece_);
-    
-    // return traj;
-    // return frontendMJ;
+
   }
 
   bool PolyTrajOptimizer::getFormationPos(vector<Eigen::Vector3d> &swarm_graph_pos, Eigen::Vector3d pos){
@@ -858,11 +718,9 @@ namespace ego_planner
     nh.param("optimization/weight_sqrvariance",         wei_sqrvar_, -1.0);
     nh.param("optimization/weight_time",                wei_time_, -1.0);
     nh.param("optimization/weight_formation",           wei_formation_, -1.0);
-    nh.param("optimization/weight_gather",              wei_gather_, -1.0);
 
     nh.param("optimization/obstacle_clearance",         obs_clearance_, -1.0);
     nh.param("optimization/swarm_clearance",            swarm_clearance_, -1.0);
-    nh.param("optimization/swarm_gather_threshold",     swarm_gather_threshold_, -1.0);
     nh.param("optimization/formation_type",             formation_type_, -1);
     nh.param("optimization/max_vel",                    max_vel_, -1.0);
     nh.param("optimization/max_acc",                    max_acc_, -1.0);
