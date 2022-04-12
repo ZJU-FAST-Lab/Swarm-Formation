@@ -33,10 +33,8 @@ namespace ego_planner
     nh.param("optimization/formation_type", formation_type_, -1);
     initSwarmGraphVisual();
     swarm_odom.resize(formation_size_);
-    
-    // only for VRB!!!!!!!!!!!!!!!!!!!!!!!
-    // formation_size_ = 8;
-    // swarm_odom.resize(formation_size_);
+    for (int i=0; i<formation_size_; i++)
+      swarm_odom[i] = Eigen::Vector3d::Zero();
     
     drone_0_odom_sub_ = nh.subscribe("/drone_0_visual_slam/odom", 1, &PlanningVisualization::drone_0_odomeCallback, this);
     drone_1_odom_sub_ = nh.subscribe("/drone_1_visual_slam/odom", 1, &PlanningVisualization::drone_1_odomeCallback, this);
@@ -55,13 +53,6 @@ namespace ego_planner
     if (drone_id_ == 0){
       swarm_graph_visual_timer_ = nh.createTimer(ros::Duration(0.01), &PlanningVisualization::swarmGraphVisulCallback, this);
     }
-        
-    // only for VRB!!!!!!!!!!!!!!!!!!!!!!!
-    // if (drone_id_ == 1){
-    //   benchmark_recorder = nh.createTimer(ros::Duration(0.2), &PlanningVisualization::benchmarkCallback, this);
-    //   // odom_csv.open("/home/lunquan/benchmark_22_trial/vrb_odom.csv");
-    //   odom_csv.open("/home/lunquan/benchmark_22_trial/heart_odom.csv");
-    // }
   }
   
   void PlanningVisualization::swarmGraphVisulCallback(const ros::TimerEvent &e){

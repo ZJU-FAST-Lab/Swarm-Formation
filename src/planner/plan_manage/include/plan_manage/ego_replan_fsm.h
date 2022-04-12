@@ -46,10 +46,9 @@ namespace ego_planner
     enum TARGET_TYPE
     {
       MANUAL_TARGET = 1,
-      PRESET_TARGET = 2,
-      FORMATION_PRESET_TRAGET = 3
+      PRESET_TARGET = 2
     };
-
+    
     /* planning utils */
     EGOPlannerManager::Ptr planner_manager_;
     PlanningVisualization::Ptr visualization_;
@@ -118,7 +117,6 @@ namespace ego_planner
     void triggerCallback(const geometry_msgs::PoseStampedPtr &msg);
     void odometryCallback(const nav_msgs::OdometryConstPtr &msg);
     void RecvBroadcastPolyTrajCallback(const traj_utils::PolyTrajConstPtr &msg);
-    void reAssignmentCallback(const traj_utils::AssignmentConstPtr &msg);
     void polyTraj2ROSMsg(traj_utils::PolyTraj &msg);
     
     bool frontEndPathSearching();

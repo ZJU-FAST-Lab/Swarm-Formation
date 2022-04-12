@@ -7,6 +7,7 @@ Panels:
         - /Global Options1
         - /Status1
         - /simulation_map1/Autocompute Value Bounds1
+        - /drone01/Planning1
         - /drone01/Planning1/goal_point1
         - /drone01/Planning1/global_path1
         - /drone01/Planning1/AStar1
@@ -40,7 +41,6 @@ Panels:
         - /drone51/Planning1/drone_path1
         - /drone51/Mapping1
         - /drone51/Mapping1/map inflate1
-        - /drone61
         - /drone61/Planning1
         - /drone61/Planning1/global_path1
         - /drone61/Planning1/drone_path1
@@ -331,21 +331,21 @@ Visualization Manager:
               Queue Size: 100
               Value: false
             - Class: rviz/Marker
-              Enabled: true
+              Enabled: false
               Marker Topic: /drone_1_ego_planner_node/global_list
               Name: global_path
-              Namespaces:
-                "": true
-              Queue Size: 100
-              Value: true
-            - Class: rviz/Marker
-              Enabled: false
-              Marker Topic: /drone_1_ego_planner_node/optimal_list
-              Name: optimal_traj
               Namespaces:
                 {}
               Queue Size: 100
               Value: false
+            - Class: rviz/Marker
+              Enabled: true
+              Marker Topic: /drone_1_ego_planner_node/optimal_list
+              Name: optimal_traj
+              Namespaces:
+                "": true
+              Queue Size: 100
+              Value: true
             - Class: rviz/Marker
               Enabled: false
               Marker Topic: /drone_1_ego_planner_node/a_star_list
@@ -1625,16 +1625,16 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 38.810394287109375
+      Distance: 34.15314483642578
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -0.5741806626319885
-        Y: 0.8943483829498291
-        Z: 2.7125601768493652
+        X: -1.1069036722183228
+        Y: 1.3861998319625854
+        Z: 2.712071180343628
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false

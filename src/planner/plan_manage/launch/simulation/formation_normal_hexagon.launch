@@ -33,9 +33,6 @@
                 swarm_clearance
                 swarm_gather_threshold
      -->
-
-    <!--FOR swarm-graph-based-->
-
     <arg name="weight_obstacle"         value="50000.0"/>
     <arg name="weight_swarm"            value="2500.0"/>
     <arg name="weight_feasibility"      value="10000.0"/>
@@ -47,20 +44,6 @@
     <arg name="obstacle_clearance"      value="0.5"/>
     <arg name="swarm_clearance"         value="0.5"/>
     <arg name="swarm_gather_threshold"  value="13.0"/>
-
-    <!--FOR relative-error-based-->
-    
-    <!-- <arg name="weight_obstacle"         value="50000.0"/>
-    <arg name="weight_swarm"            value="2500.0"/>
-    <arg name="weight_feasibility"      value="10000.0"/>
-    <arg name="weight_sqrvariance"      value="10000.0"/>
-    <arg name="weight_time"             value="80.0"/>
-    <arg name="weight_formation"        value="13000.0"/>
-    <arg name="weight_gather"           value="100.0"/>
-
-    <arg name="obstacle_clearance"      value="0.5"/>
-    <arg name="swarm_clearance"         value="0.5"/>
-    <arg name="swarm_gather_threshold"  value="6.0"/> -->
     
     <!-- 
         0: (default) swarm-graph-based
@@ -82,15 +65,7 @@
         <param name="map/y_size"     value="15" />
         <param name="map/z_size"     value="3.0" />
         <param name="map/resolution" value="0.1"/>        
-
         <param name="ObstacleShape/seed" value="1"/>
-        
-        <!-- 
-            0 : none
-            1 : wall with hole
-        
-         -->
-        <param name="fix_obs_type" value="0"/>
         
         <param name="map/obs_num"    value="60"/>
         <param name="ObstacleShape/lower_rad" value="0.5"/>
@@ -108,43 +83,7 @@
         <param name="pub_rate"   value="1.0"/>  
         <param name="min_distance" value="0.8"/>         
     </node>
-
-    <![CDATA[node pkg="mockamap" type="mockamap_node" name="mockamap_node" output="screen">  
-      <remap from="/mock_map" to="/map_generator/global_cloud"/>
-
-      <param name="seed" type="int" value="2"/>
-      <param name="update_freq" type="double" value="0.5"/>
-
-      <!--  box edge length, unit meter-->
-      <param name="resolution" type="double" value="0.1"/>
-
-      <!-- map size unit meter-->
-      <param name="x_length" value="36"/>
-      <param name="y_length" value="20"/>
-      <param name="z_length" value="3"/>
-
-      <param name="type" type="int" value="1"/>
-      <!-- 1 perlin noise parameters -->
-      <!-- complexity:    base noise frequency,
-                              large value will be complex
-                              typical 0.0 ~ 0.5 -->
-      <!-- fill:          infill persentage
-                              typical: 0.4 ~ 0.0 -->
-      <!-- fractal:       large value will have more detail-->
-      <!-- attenuation:   for fractal attenuation
-                              typical: 0.0 ~ 0.5 -->
-
-      <param name="complexity"    type="double" value="0.05"/>
-      <param name="fill"          type="double" value="0.15"/>
-      <param name="fractal"       type="int"    value="1"/>
-      <param name="attenuation"   type="double" value="0.1"/>
-  </node]]>
-
-    <!-- <node pkg ="ground_station" name ="ground_station" type ="ground_station" output = "screen">
-        <param name="ground/drone_num"   value="4" type="int"/>
-
-    </node> -->
-
+    
     <include file="$(find ego_planner)/launch/run_in_sim.launch">
         <arg name="drone_id" value="0"/>
 

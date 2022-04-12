@@ -99,37 +99,6 @@ namespace ego_planner
       start_pub_.publish(flag_msg);
       planGlobalTrajbyGivenWps();
     }
-    else if (target_type_ == TARGET_TYPE::FORMATION_PRESET_TRAGET)
-    {
-      trigger_sub_ = nh.subscribe("/traj_start_trigger", 1, &EGOReplanFSM::triggerCallback, this);
-      // wait to add a switch formation assignment callback()
-      // assignment_sub_ = nh.subscribe("/swarm_formation_assignment", 1, &EGOReplanFSM::reAssignmentCallback, this);
-
-      ROS_INFO("Wait for 3 second.");
-      int count = 0;
-      while (ros::ok() && count++ < 3000)
-      {
-        ros::spinOnce();
-        ros::Duration(0.001).sleep();
-      }
-      ROS_WARN("Waiting for trigger from [n3ctrl] from RC");
-
-      while (ros::ok() && (!have_odom_ || !have_trigger_))
-      {
-        ros::spinOnce();
-        ros::Duration(0.001).sleep();
-      }
-
-      std_msgs::Bool flag_msg;
-      flag_msg.data = true;
-      planner_manager_->global_start_time_ = ros::Time::now();
-      planner_manager_->start_flag_ = true;
-      start_pub_.publish(flag_msg);
-
-      last_end_id_ = planner_manager_->pp_.drone_id;
-      // first plan the global trajectory by the default formation goal assignment
-      planGlobalTrajbyGivenWps();
-    }
     else
       cout << "Wrong target_type_ value! target_type_=" << target_type_ << endl;
   }
@@ -546,64 +515,6 @@ namespace ego_planner
     }
   }
 
-  void EGOReplanFSM::reAssignmentCallback(const traj_utils::AssignmentConstPtr &msg){
-    if (!have_target_)
-      return;
-    
-    // reassign the goal
-    int new_end_id = msg->assignment[planner_manager_->pp_.drone_id];
-    ROS_WARN("new_end_id : %d,  drone_id : %d", new_end_id, planner_manager_->pp_.drone_id);
-    bool success = false;
-    end_pt_ << goalpoints_[new_end_id][0], goalpoints_[new_end_id][1], goalpoints_[new_end_id][2];
-    
-    /* two case not to plan global trajectory */
-    // 1: the new_end_id = last_end_id, no need to replan
-    // 2: uav is close to the assigned goal
-    if (new_end_id == last_end_id_ || (odom_pos_ - end_pt_).norm() < 0.1)
-      return;
-    
-    last_end_id_ = new_end_id;
-    
-    // generate new global trajectory
-    std::vector<Eigen::Vector3d> one_pt_wps;
-    one_pt_wps.push_back(end_pt_);
-
-    success = planner_manager_->planGlobalTrajWaypoints(
-        odom_pos_, odom_vel_, Eigen::Vector3d::Zero(),
-        one_pt_wps, Eigen::Vector3d::Zero(), Eigen::Vector3d::Zero());
-
-    visualization_->displayGoalPoint(end_pt_, Eigen::Vector4d(0, 0.5, 0.5, 1), 0.3, 0);
-
-    if (success)
-    {
-      /*** display ***/
-      constexpr double step_size_t = 0.1;
-      int i_end = floor(planner_manager_->traj_.global_traj.duration / step_size_t);
-      vector<Eigen::Vector3d> gloabl_traj(i_end);
-      for (int i = 0; i < i_end; i++)
-      {
-        gloabl_traj[i] = planner_manager_->traj_.global_traj.traj.getPos(i * step_size_t);
-      }
-
-      end_vel_.setZero();
-      have_target_ = true;
-      have_new_target_ = true;
-
-      /*** FSM ***/
-      if (exec_state_ == WAIT_TARGET)
-        changeFSMExecState(GEN_NEW_TRAJ, "TRIG");
-      else if (exec_state_ == EXEC_TRAJ)
-        changeFSMExecState(REPLAN_TRAJ, "TRIG");
-
-      // visualization_->displayGoalPoint(end_pt_, Eigen::Vector4d(1, 0, 0, 1), 0.3, 0);
-      visualization_->displayGlobalPathList(gloabl_traj, 0.1, 0);
-    }
-    else
-    {
-      ROS_ERROR("Unable to generate global trajectory!");
-    }
-  }
-
   void EGOReplanFSM::changeFSMExecState(FSM_EXEC_STATE new_state, string pos_call)
   {
 
@@ -710,16 +621,6 @@ namespace ego_planner
       }
 
     } 
-    
-    else if (target_type_ == TARGET_TYPE::FORMATION_PRESET_TRAGET){
-      wps.resize(1);
-      wps[0](0) = goalpoints_[planner_manager_->pp_.drone_id][0];
-      wps[0](1) = goalpoints_[planner_manager_->pp_.drone_id][1];
-      wps[0](2) = goalpoints_[planner_manager_->pp_.drone_id][2];
-      end_pt_ = wps.back();
-      visualization_->displayGoalPoint(end_pt_, Eigen::Vector4d(0, 0.5, 0.5, 1), 0.3, 0);
-      ros::Duration(0.001).sleep();
-    }
     else 
       return;
 
