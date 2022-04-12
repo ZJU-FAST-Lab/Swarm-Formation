@@ -78,7 +78,7 @@
 
     <!-- map -->
     <node pkg ="map_generator" name ="random_forest" type ="random_forest" output = "screen">    
-        <param name="map/x_size"     value="40" />
+        <param name="map/x_size"     value="34" />
         <param name="map/y_size"     value="15" />
         <param name="map/z_size"     value="3.0" />
         <param name="map/resolution" value="0.1"/>        
@@ -92,13 +92,13 @@
          -->
         <param name="fix_obs_type" value="0"/>
         
-        <param name="map/obs_num"    value="250"/> <!--60-->
+        <param name="map/obs_num"    value="0"/>
         <param name="ObstacleShape/lower_rad" value="0.5"/>
         <param name="ObstacleShape/upper_rad" value="0.5"/>
         <param name="ObstacleShape/lower_hei" value="2.0"/>
         <param name="ObstacleShape/upper_hei" value="3.0"/>        
 
-        <param name="map/circle_num" value="0"/>        
+        <param name="map/circle_num" value="20"/>        
         <param name="ObstacleShape/radius_l" value="1.0"/>        
         <param name="ObstacleShape/radius_h" value="1.2"/>        
         <param name="ObstacleShape/z_l" value="0.7"/>        

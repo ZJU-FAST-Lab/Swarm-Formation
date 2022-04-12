@@ -120,7 +120,7 @@ void GridMap::initMap(ros::NodeHandle &nh)
   depth_sub_.reset(new message_filters::Subscriber<sensor_msgs::Image>(node_, "grid_map/depth", 50));
   extrinsic_sub_ = node_.subscribe<nav_msgs::Odometry>(
       "/vins_estimator/extrinsic", 10, &GridMap::extrinsicCallback, this); //sub
-
+  
   if (mp_.pose_type_ == POSE_STAMPED)
   {
     pose_sub_.reset(
@@ -147,7 +147,7 @@ void GridMap::initMap(ros::NodeHandle &nh)
   
   occ_timer_  = node_.createTimer(ros::Duration(0.05), &GridMap::updateOccupancyCallback, this);
   esdf_timer_ = node_.createTimer(ros::Duration(0.05), &GridMap::updateESDFCallback, this);
-  // vis_timer_  = node_.createTimer(ros::Duration(0.05), &GridMap::visCallback, this);
+  vis_timer_  = node_.createTimer(ros::Duration(0.05), &GridMap::visCallback, this);
   
   map_pub_      = node_.advertise<sensor_msgs::PointCloud2>("grid_map/occupancy", 10);
   map_inf_pub_  = node_.advertise<sensor_msgs::PointCloud2>("grid_map/occupancy_inflate", 10);
@@ -687,7 +687,7 @@ void GridMap::visCallback(const ros::TimerEvent & /*event*/)
   publishMapInflate(true);
   publishMap();
 
-  publishESDF();
+  // publishESDF();
 }
 
 void GridMap::updateOccupancyCallback(const ros::TimerEvent & /*event*/)
