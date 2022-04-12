@@ -2065,11 +2065,12 @@ namespace ego_planner
 
   void PolyTrajOptimizer::setControlPoints(const Eigen::MatrixXd &points)
   {
+    cps_.resize_cp(points.cols());
     cps_.points = points;
   }
 
   void PolyTrajOptimizer::setSwarmTrajs(SwarmTrajData *swarm_trajs_ptr) { swarm_trajs_ = swarm_trajs_ptr; }
 
   void PolyTrajOptimizer::setDroneId(const int drone_id) { drone_id_ = drone_id; }
-
-} // namespace ego_planner
+  
+}

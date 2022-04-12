@@ -205,9 +205,10 @@ namespace ego_planner
     Eigen::MatrixXd cstr_pts = initMJO.getInitConstrainPoints(ploy_traj_opt_->get_cps_num_prePiece_());
     
     // wait to delete
-    vector<std::pair<int, int>> segments;
-    segments = ploy_traj_opt_->setAndFinelyCheckConstrainPoints(cstr_pts, true);
-  
+    // vector<std::pair<int, int>> segments;
+    // segments = ploy_traj_opt_->setAndFinelyCheckConstrainPoints(cstr_pts, true);
+    ploy_traj_opt_->setControlPoints(cstr_pts);
+    
     t_init = ros::Time::now() - t_start;
 
     std::vector<Eigen::Vector3d> point_set;
@@ -220,49 +221,6 @@ namespace ego_planner
     /*** STEP 2: OPTIMIZE ***/
     bool flag_success = false;
     vector<vector<Eigen::Vector3d>> vis_trajs;
-
-    // if (pp_.use_distinctive_trajs)
-    // {
-    //   Eigen::MatrixXd ctrl_pts_temp;
-    //   std::vector<ConstrainPoints> trajs = ploy_traj_opt_->distinctiveTrajs(segments);
-    //   cout << "\033[1;33m"
-    //        << "multi-trajs=" << trajs.size() << "\033[1;0m" << endl;
-
-    //   double final_cost, min_cost = 999999.0;
-    //   for (int i = trajs.size() - 1; i >= 0; i--)
-    //   {
-    //     if (ploy_traj_opt_->OptimizeTrajectory(ctrl_pts_temp, final_cost, trajs[i], ts))
-    //     {
-
-    //       cout << "traj " << trajs.size() - i << " success." << endl;
-
-    //       flag_step_1_success = true;
-    //       if (final_cost < min_cost)
-    //       {
-    //         min_cost = final_cost;
-    //         ctrl_pts = ctrl_pts_temp;
-    //       }
-
-    //       // visualization
-    //       std::vector<Eigen::Vector3d> point_set;
-    //       for (int j = 0; j < ctrl_pts_temp.cols(); j++)
-    //       {
-    //         point_set.push_back(ctrl_pts_temp.col(j));
-    //       }
-    //       vis_trajs.push_back(point_set);
-    //     }
-    //     else
-    //     {
-    //       cout << "traj " << trajs.size() - i << " failed." << endl;
-    //     }
-    //   }
-
-    //   t_opt = ros::Time::now() - t_start;
-
-    //   visualization_->displayMultiInitPathList(vis_trajs, 0.2); // This visuallization will take up several milliseconds.
-    // }
-    // {
-    // else
     
     poly_traj::Trajectory initTraj = initMJO.getTraj();
     int PN = initTraj.getPieceNum();
@@ -272,24 +230,12 @@ namespace ego_planner
     headState << initTraj.getJuncPos(0), initTraj.getJuncVel(0), initTraj.getJuncAcc(0);
     tailState << initTraj.getJuncPos(PN), initTraj.getJuncVel(PN), initTraj.getJuncAcc(PN);
     
-    //debug
-    // cout << "[final init traj] : ----------- " << endl;
-    // cout << "start pos : " << initTraj.getJuncPos(0).transpose() << endl;
-    // cout << "end pos : " << initTraj.getJuncPos(PN).transpose() << endl;
-    // cout << "PN : " << PN << endl;
-    // cout << "all_pos : " << endl;
-    // cout << all_pos << endl;
-    // cout << "time allocation : " << initTraj.getDurations().transpose() << endl;
-    
     flag_success = ploy_traj_opt_->OptimizeTrajectory_lbfgs(headState, tailState,
                                                             innerPts, initTraj.getDurations(),
                                                             cstr_pts, use_formation);
     
     t_opt = ros::Time::now() - t_start;
-    // }
-    
-    // // save and display planned results
-    // cout << "plan_success=" << flag_success << endl;
+
     if (!flag_success)
     {
       visualization_->displayFailedList(cstr_pts, 0);
@@ -307,11 +253,6 @@ namespace ego_planner
          << ",avg_time=" << sum_time / count_success 
          << ",count_success= " << count_success << endl;
     average_plan_time_ = sum_time / count_success;
-    // if (count_success == 1) {
-    //   // start_time_ = (t_init + t_opt).toSec();
-    //   // start_flag_ = true;
-    //   start_time_ = (ros::Time::now() - global_start_time_).toSec();
-    // }
 
     traj_.setLocalTraj(ploy_traj_opt_->getMinJerkOptPtr()->getTraj(), ros::Time::now().toSec()); // todo time
     visualization_->displayOptimalList(cstr_pts, 0);
