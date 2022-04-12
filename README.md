@@ -7,7 +7,7 @@ Video Links(the part of real-world experiments will be disclosed soon):
 [Youtube](https://www.youtube.com/watch?v=lFumt0rJci4) or [Bilibili](https://www.bilibili.com/video/BV1qv41137Si?spm_id_from=333.999.0.0) (only forMainland China).
 
 # About
-Author: [Lun Quan](https://scholar.google.com.hk/citations?user=PNIk-DEAAAAJ&hl=zh-CN), Longji Ying, and [Fei Gao](https://ustfei.com/) from [ZJU FAST Lab](http://zju-fast.com/).
+Author: [Lun Quan](https://scholar.google.com.hk/citations?user=PNIk-DEAAAAJ&hl=zh-CN), Longji Yin, and [Fei Gao](https://ustfei.com/) from [ZJU FAST Lab](http://zju-fast.com/).
 
 Related Paper:
 [Distributed Swarm Trajectory Optimization for Formation Flight in Dense Environments](https://arxiv.org/abs/2109.07682), Lun Quan, Longji Yin, Chao Xu, and Fei Gao. This paper has been submitted to [ICRA2022](https://www.icra2022.org/).
