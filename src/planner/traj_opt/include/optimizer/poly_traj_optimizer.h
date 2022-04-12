@@ -96,14 +96,6 @@ namespace ego_planner
       REGULAR_HEXAGON       = 1
     };
 
-    enum FORMATION_METHOD_TYPE
-    {
-      SWARM_GRAPH           = 0, // (default)
-      LEADER_POSITION       = 1,
-      RELATIVE_POSITION     = 2,
-      VRB_METHOD            = 3
-    };
-
     /* optimization parameters */
     double wei_obs_;                         // obstacle weight
     double wei_swarm_;                       // swarm weight
@@ -119,19 +111,11 @@ namespace ego_planner
     double max_vel_, max_acc_;               // dynamic limits
     
     int    formation_type_;
-    int    formation_method_type_;
     int    formation_size_;
     bool   use_formation_ = true;
     bool   is_other_assigning_ = false;
 
-    // ros utils
-    ros::Subscriber re_assignment_sub_;
-    ros::Publisher  assignment_pub_;
-
     double t_now_;
-
-    // benchmark 
-    vector<Eigen::Vector3d> formation_relative_dist_;
 
   public:
     
@@ -170,8 +154,6 @@ namespace ego_planner
     static int earlyExitCallback(void *func_data, const double *x, const double *g,
                                  const double fx, const double xnorm, const double gnorm,
                                  const double step, int n, int k, int ls);
-
-    void reAssignmentCallback(const traj_utils::AssignmentConstPtr &msg);
 
     /* mappings between real world time and unconstrained virtual time */
     template <typename EIGENVEC>
@@ -223,25 +205,7 @@ namespace ego_planner
                               double &gradt,
                               double &grad_prev_t,
                               double &costp);
-    
-    // benchmark
-    bool leaderPosFormationCostGradP(const int i_dp,
-                                    const double t,
-                                    const Eigen::Vector3d &p,
-                                    const Eigen::Vector3d &v,
-                                    Eigen::Vector3d &gradp,
-                                    double &gradt,
-                                    double &grad_prev_t,
-                                    double &costp);
-    
-    bool relativePosFormationCostGradP(const int i_dp,
-                                       const double t,
-                                       const Eigen::Vector3d &p,
-                                       const Eigen::Vector3d &v,
-                                       Eigen::Vector3d &gradp,
-                                       double &gradt,
-                                       double &grad_prev_t,
-                                       double &costp);
+
 
     bool feasibilityGradCostV(const Eigen::Vector3d &v,
                               Eigen::Vector3d &gradv,

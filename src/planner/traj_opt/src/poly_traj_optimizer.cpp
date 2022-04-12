@@ -278,80 +278,30 @@ namespace ego_planner
 
         /* Formation method chosing */
         if (use_formation_){
-          switch (formation_method_type_)
-          {
-            case FORMATION_METHOD_TYPE::SWARM_GRAPH:
+          // deformale formation
+          if (swarmGraphGradCostP(i_dp, t + step * j, pos, vel, gradp, gradt, grad_prev_t, costp)){
+            gradViolaPc = beta0 * gradp.transpose();
+            gradViolaPt = alpha * gradt;
+            jerkOpt_.get_gdC().block<6, 3>(i * 6, 0) += omg * step * gradViolaPc;
+            gdT(i) += omg * (costp / K + step * gradViolaPt);
+            if (i > 0)
             {
-              // deformale formation
-              if (swarmGraphGradCostP(i_dp, t + step * j, pos, vel, gradp, gradt, grad_prev_t, costp)){
-                gradViolaPc = beta0 * gradp.transpose();
-                gradViolaPt = alpha * gradt;
-                jerkOpt_.get_gdC().block<6, 3>(i * 6, 0) += omg * step * gradViolaPc;
-                gdT(i) += omg * (costp / K + step * gradViolaPt);
-                if (i > 0)
-                {
-                  gdT.head(i).array() += omg * step * grad_prev_t;
-                }
-                costs(2) += omg * step * costp;
+              gdT.head(i).array() += omg * step * grad_prev_t;
               }
-              
-              // swarm gathering
-              if (swarmGatherCostGradP(i_dp, t + step * j, pos, vel, gradp, gradt, grad_prev_t, costp)){
-                gradViolaPc = beta0 * gradp.transpose();
-                gradViolaPt = alpha * gradt;
-                jerkOpt_.get_gdC().block<6, 3>(i * 6, 0) += omg * step * gradViolaPc;
-                gdT(i) += omg * (costp / K + step * gradViolaPt);
-                if (i > 0)
-                {
-                  gdT.head(i).array() += omg * step * grad_prev_t;
-                }
-                costs(3) += omg * step * costp;
-              }
-              break;
-            }
-
-            case FORMATION_METHOD_TYPE::LEADER_POSITION :
-            {
-              // benchmark: leader-follower position-based formation
-              if (leaderPosFormationCostGradP(i_dp, t + step * j, pos, vel, gradp, gradt, grad_prev_t, costp)){
-                gradViolaPc = beta0 * gradp.transpose();
-                gradViolaPt = alpha * gradt;
-                jerkOpt_.get_gdC().block<6, 3>(i * 6, 0) += omg * step * gradViolaPc;
-                gdT(i) += omg * (costp / K + step * gradViolaPt);
-                if (i > 0)
-                {
-                  gdT.head(i).array() += omg * step * grad_prev_t;
-                }
-                costs(3) += omg * step * costp;
-              }
-              break;
+              costs(2) += omg * step * costp;
             }
             
-            case FORMATION_METHOD_TYPE::RELATIVE_POSITION :
+          // swarm gathering
+          if (swarmGatherCostGradP(i_dp, t + step * j, pos, vel, gradp, gradt, grad_prev_t, costp)){
+            gradViolaPc = beta0 * gradp.transpose();
+            gradViolaPt = alpha * gradt;
+            jerkOpt_.get_gdC().block<6, 3>(i * 6, 0) += omg * step * gradViolaPc;
+            gdT(i) += omg * (costp / K + step * gradViolaPt);
+            if (i > 0)
             {
-              // benchmark: relative position-based formation
-              if (relativePosFormationCostGradP(i_dp, t + step * j, pos, vel, gradp, gradt, grad_prev_t, costp)){
-                gradViolaPc = beta0 * gradp.transpose();
-                gradViolaPt = alpha * gradt;
-                jerkOpt_.get_gdC().block<6, 3>(i * 6, 0) += omg * step * gradViolaPc;
-                gdT(i) += omg * (costp / K + step * gradViolaPt);
-                if (i > 0)
-                {
-                  gdT.head(i).array() += omg * step * grad_prev_t;
-                }
-                costs(3) += omg * step * costp;
-              }
-              break;
+              gdT.head(i).array() += omg * step * grad_prev_t;
             }
-
-            case FORMATION_METHOD_TYPE::VRB_METHOD :
-            {
-              // benchmark: VRB-method 
-
-            }
-            
-            default:
-              break;
+            costs(3) += omg * step * costp;
           }
         }
                 
@@ -616,29 +566,11 @@ namespace ego_planner
   {
     if (i_dp == 0 || i_dp >= cps_.cp_size * 2 / 3)
       return false;
-    // if (i_dp == 0)
-    //   return false;
 
     bool ret = false;
 
     gradp.setZero();
     costp = 0;
-
-    // Obatacle cost
-    // for (size_t j = 0; j < cps_.direction[i_dp].size(); ++j)
-    // {
-    //   Eigen::Vector3d ray = (p - cps_.base_point[i_dp][j]);
-    //   double dist = ray.dot(cps_.direction[i_dp][j]);
-    //   double dist_err = obs_clearance_ - dist;
-    //   Eigen::Vector3d dist_grad = cps_.direction[i_dp][j];
-
-    //   if (dist_err > 0)
-    //   {
-    //     ret = true;
-    //     costp += wei_obs_ * pow(dist_err, 3);
-    //     gradp += -wei_obs_ * 3.0 * dist_err * dist_err * dist_grad;
-    //   }
-    // }
     
     // use esdf
     double dist;
@@ -916,196 +848,6 @@ namespace ego_planner
     }
   }
 
-  bool PolyTrajOptimizer::leaderPosFormationCostGradP(const int i_dp,
-                                                      const double t,
-                                                      const Eigen::Vector3d &p,
-                                                      const Eigen::Vector3d &v,
-                                                      Eigen::Vector3d &gradp,
-                                                      double &gradt,
-                                                      double &grad_prev_t,
-                                                      double &costp)
-  {
-    if (drone_id_ == 0)
-      return false;
-    
-    if (i_dp <= 0 || i_dp >= cps_.cp_size * 2 / 3)
-      return false;
-
-    // init parameters
-    gradp.setZero();
-    costp = 0;
-    gradt = 0;
-    grad_prev_t = 0;
-
-    /* formation cost */
-    // get pilot_pos and pilot_vel
-    Eigen::Vector3d pilot_pos, pilot_vel;
-    double pt_time = t_now_ + t;
-    double traj_i_satrt_time = swarm_trajs_->at(0).start_time;
-    if (pt_time < traj_i_satrt_time + swarm_trajs_->at(0).duration){
-      pilot_pos = swarm_trajs_->at(0).traj.getPos(pt_time - traj_i_satrt_time);
-      pilot_vel = swarm_trajs_->at(0).traj.getVel(pt_time - traj_i_satrt_time);
-    } else {
-      double exceed_time = pt_time - (traj_i_satrt_time + swarm_trajs_->at(0).duration);
-      pilot_vel = swarm_trajs_->at(0).traj.getVel(swarm_trajs_->at(0).duration);
-      pilot_pos = swarm_trajs_->at(0).traj.getPos(swarm_trajs_->at(0).duration) + exceed_time * pilot_vel;
-    }
-
-    // get formation goal
-    Eigen::Vector3d formation_goal = pilot_pos + formation_relative_dist_[drone_id_];
-    double formation_clearance = 0.1;
-
-    // calculate cost
-    Eigen::Vector3d dist_vec = p - formation_goal;
-    double dist2 = dist_vec.squaredNorm();    
-    
-    double dist2_err_max  = dist2 - formation_clearance * formation_clearance;
-    double dist2_err2_max = dist2_err_max * dist2_err_max;
-    double dist2_err3_max = dist2_err2_max * dist2_err_max;
-
-    if (dist2_err_max > 0 ){
-      costp = wei_formation_ * dist2_err3_max;
-      Eigen::Vector3d dJ_dP = wei_formation_ * 3 * dist2_err2_max * 2 * dist_vec;
-      gradp = dJ_dP;
-      gradt = dJ_dP.dot(v - pilot_vel);
-      grad_prev_t = dJ_dP.dot(-pilot_vel);
-    }
-    return true;
-  }
-
-  bool PolyTrajOptimizer::relativePosFormationCostGradP(const int i_dp,
-                                                        const double t,
-                                                        const Eigen::Vector3d &p,
-                                                        const Eigen::Vector3d &v,
-                                                        Eigen::Vector3d &gradp,
-                                                        double &gradt,
-                                                        double &grad_prev_t,
-                                                        double &costp)
-  {
-    if (drone_id_ == 0)
-      return false;
-    
-    if (i_dp <= 0 || i_dp >= cps_.cp_size * 2 / 3)
-      return false;
-    
-    int formation_size = 7;
-    int size = swarm_trajs_->size();
-    if (size < formation_size)
-      return false;
-
-    // init parameters
-    gradp.setZero();
-    costp = 0;
-    gradt = 0;
-    grad_prev_t = 0;
-
-    // get the swarm pos
-    vector<Eigen::Vector3d> swarm_pos(formation_size), swarm_vel(formation_size);
-    swarm_pos[drone_id_] = p;
-    swarm_vel[drone_id_] = v;
-    
-    for (size_t id = 0; id < formation_size; id++){
-      if (id == drone_id_)
-        continue;
-      
-      double pt_time = t_now_ + t;
-      double traj_i_satrt_time = swarm_trajs_->at(id).start_time;
-
-      Eigen::Vector3d swarm_p, swarm_v;
-      if (pt_time < traj_i_satrt_time + swarm_trajs_->at(id).duration)
-      {
-        swarm_p = swarm_trajs_->at(id).traj.getPos(pt_time - traj_i_satrt_time);
-        swarm_v = swarm_trajs_->at(id).traj.getVel(pt_time - traj_i_satrt_time);
-      }
-      else
-      {
-        double exceed_time = pt_time - (traj_i_satrt_time + swarm_trajs_->at(id).duration);
-        swarm_v = swarm_trajs_->at(id).traj.getVel(swarm_trajs_->at(id).duration);
-        swarm_p = swarm_trajs_->at(id).traj.getPos(swarm_trajs_->at(id).duration) +
-                  exceed_time * swarm_v;
-      }
-      swarm_pos[id] = swarm_p;
-      swarm_vel[id] = swarm_v;
-    }
-
-    // get relative goal and connect_num
-    int connect_num;
-    vector<Eigen::Vector3d> connect_pos, connect_vel;
-    if (drone_id_ == 0){
-      connect_num = 6;
-      for (int i=1; i<= connect_num; i++){
-        connect_pos.push_back(swarm_pos[i]-formation_relative_dist_[i]);
-        connect_vel.push_back(swarm_vel[i]);
-      }
-    }     
-    else{ 
-      connect_num = 3;
-      if (drone_id_ == 1){
-        connect_pos.push_back(swarm_pos[0]+formation_relative_dist_[1]);
-        connect_vel.push_back(swarm_vel[0]);
-        connect_pos.push_back(swarm_pos[6]+formation_relative_dist_[2]);
-        connect_vel.push_back(swarm_vel[6]);
-        connect_pos.push_back(swarm_pos[2]+formation_relative_dist_[6]);
-        connect_vel.push_back(swarm_vel[2]);
-      } else if (drone_id_ == 2){
-        connect_pos.push_back(swarm_pos[0]+formation_relative_dist_[2]);
-        connect_vel.push_back(swarm_vel[0]);
-        connect_pos.push_back(swarm_pos[1]+formation_relative_dist_[3]);
-        connect_vel.push_back(swarm_vel[1]);
-        connect_pos.push_back(swarm_pos[3]+formation_relative_dist_[1]);
-        connect_vel.push_back(swarm_vel[3]);
-      } else if (drone_id_ == 3){
-        connect_pos.push_back(swarm_pos[0]+formation_relative_dist_[3]);
-        connect_vel.push_back(swarm_vel[0]);
-        connect_pos.push_back(swarm_pos[2]+formation_relative_dist_[4]);
-        connect_vel.push_back(swarm_vel[2]);
-        connect_pos.push_back(swarm_pos[4]+formation_relative_dist_[2]);
-        connect_vel.push_back(swarm_vel[4]);
-      } else if (drone_id_ == 4){
-        connect_pos.push_back(swarm_pos[0]+formation_relative_dist_[4]);
-        connect_vel.push_back(swarm_vel[0]);
-        connect_pos.push_back(swarm_pos[3]+formation_relative_dist_[5]);
-        connect_vel.push_back(swarm_vel[3]);
-        connect_pos.push_back(swarm_pos[5]+formation_relative_dist_[3]);
-        connect_vel.push_back(swarm_vel[5]);
-      } else if (drone_id_ == 5){
-        connect_pos.push_back(swarm_pos[0]+formation_relative_dist_[5]);
-        connect_vel.push_back(swarm_vel[0]);
-        connect_pos.push_back(swarm_pos[4]+formation_relative_dist_[6]);
-        connect_vel.push_back(swarm_vel[4]);
-        connect_pos.push_back(swarm_pos[6]+formation_relative_dist_[4]);
-        connect_vel.push_back(swarm_vel[6]);
-      } else if (drone_id_ == 6){
-        connect_pos.push_back(swarm_pos[0]+formation_relative_dist_[6]);
-        connect_vel.push_back(swarm_vel[0]);
-        connect_pos.push_back(swarm_pos[5]+formation_relative_dist_[1]);
-        connect_vel.push_back(swarm_vel[5]);
-        connect_pos.push_back(swarm_pos[1]+formation_relative_dist_[5]);
-        connect_vel.push_back(swarm_vel[1]);
-      }
-    }
-    
-    // calculate cost
-    double formation_clearance = 0.1;
-    for (int i=0; i<connect_num; i++){
-      Eigen::Vector3d dist_vec = p - connect_pos[i];
-      double dist2 = dist_vec.squaredNorm();    
-      
-      double dist2_err_max  = dist2 - formation_clearance * formation_clearance;
-      double dist2_err2_max = dist2_err_max * dist2_err_max;
-      double dist2_err3_max = dist2_err2_max * dist2_err_max;
-
-      if (dist2_err_max > 0 ){
-        costp += wei_formation_ * dist2_err3_max;
-        Eigen::Vector3d dJ_dP = wei_formation_ * 3 * dist2_err2_max * 2 * dist_vec;
-        gradp += dJ_dP;
-        gradt += dJ_dP.dot(v - connect_vel[i]);
-        grad_prev_t += dJ_dP.dot(-connect_vel[i]);
-      }
-    }
-    return true;
-  }
-
   /* helper functions */
   void PolyTrajOptimizer::setParam(ros::NodeHandle &nh)
   {
@@ -1122,7 +864,6 @@ namespace ego_planner
     nh.param("optimization/swarm_clearance",            swarm_clearance_, -1.0);
     nh.param("optimization/swarm_gather_threshold",     swarm_gather_threshold_, -1.0);
     nh.param("optimization/formation_type",             formation_type_, -1);
-    nh.param("optimization/formation_method_type",      formation_method_type_, 0);
     nh.param("optimization/max_vel",                    max_vel_, -1.0);
     nh.param("optimization/max_acc",                    max_acc_, -1.0);
     
@@ -1130,38 +871,6 @@ namespace ego_planner
     swarm_graph_.reset( new SwarmGraph );
     setDesiredFormation(formation_type_);
     
-    /* ros utils, API prepare for futrue formation assginment work */
-    // re_assignment_sub_ = nh.subscribe("/swarm_formation_assignment", 1, &PolyTrajOptimizer::reAssignmentCallback, this);
-    // assignment_pub_    = nh.advertise<traj_utils::Assignment>("/swarm_formation_assignment", 1);
-    
-    // benchmark position-based formation setting
-    formation_relative_dist_.push_back(Eigen::Vector3d(0.0, 0.0, 0.0));
-    formation_relative_dist_.push_back(Eigen::Vector3d(2.6, -1.5, 0.0));
-    formation_relative_dist_.push_back(Eigen::Vector3d(0.0, -3.0, 0.0));
-    formation_relative_dist_.push_back(Eigen::Vector3d(-2.6, -1.5, 0.0));
-    formation_relative_dist_.push_back(Eigen::Vector3d(-2.6, 1.5, 0.0));
-    formation_relative_dist_.push_back(Eigen::Vector3d(0.0, 3.0, 0.0));
-    formation_relative_dist_.push_back(Eigen::Vector3d(2.6, 1.5, 0.0));  
-    // formation_relative_dist_.push_back(Eigen::Vector3d(0.0, 0.0, 0.0));
-    // formation_relative_dist_.push_back(Eigen::Vector3d(5.2, -3.0, 0.0));
-    // formation_relative_dist_.push_back(Eigen::Vector3d(0.0, -6.0, 0.0));
-    // formation_relative_dist_.push_back(Eigen::Vector3d(-5.2, -3.0, 0.0));
-    // formation_relative_dist_.push_back(Eigen::Vector3d(-5.2, 3.0, 0.0));
-    // formation_relative_dist_.push_back(Eigen::Vector3d(0.0, 6.0, 0.0));
-    // formation_relative_dist_.push_back(Eigen::Vector3d(5.2, 3.0, 0.0));    
-  }
-
-  void PolyTrajOptimizer::reAssignmentCallback(const traj_utils::AssignmentConstPtr &msg){
-    vector<int> assignment(formation_size_);
-    printf("\033[47;34mGet reAssignment from other UAV~\n.\033[0m");
-    cout << "assignment is : ";
-    for (int i=0; i<formation_size_; i++){
-      assignment[i] = msg->assignment[i];
-      cout << assignment[i] << " ";
-    }
-    cout << endl;
-    
-    swarm_graph_->setDesiredAssignment(assignment);
   }
 
   void PolyTrajOptimizer::setEnvironment(const GridMap::Ptr &map)
