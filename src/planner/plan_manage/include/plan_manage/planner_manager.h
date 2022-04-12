@@ -31,11 +31,6 @@ namespace ego_planner
         const Eigen::Vector3d &start_acc, const Eigen::Vector3d &end_pt, 
         const Eigen::Vector3d &end_vel, const bool flag_polyInit, const bool flag_randomPolyTraj,
         const bool use_formation);
-    bool computeInitState(
-        const Eigen::Vector3d &start_pt, const Eigen::Vector3d &start_vel, 
-        const Eigen::Vector3d &start_acc, const Eigen::Vector3d &local_target_pt, 
-        const Eigen::Vector3d &local_target_vel, const bool flag_polyInit, 
-        const bool flag_randomPolyTraj, const double &ts, poly_traj::MinJerkOpt &initMJO);
     bool computeInitReferenceState(
         const Eigen::Vector3d &start_pt, const Eigen::Vector3d &start_vel, 
         const Eigen::Vector3d &start_acc, const Eigen::Vector3d &local_target_pt,

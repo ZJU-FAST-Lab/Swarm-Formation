@@ -35,135 +35,6 @@ namespace ego_planner
     visualization_ = vis;
   }
   
-  bool EGOPlannerManager::computeInitState(
-      const Eigen::Vector3d &start_pt, const Eigen::Vector3d &start_vel, const Eigen::Vector3d &start_acc,
-      const Eigen::Vector3d &local_target_pt, const Eigen::Vector3d &local_target_vel,
-      const bool flag_polyInit, const bool flag_randomPolyTraj, const double &ts,
-      poly_traj::MinJerkOpt &initMJO)
-  {
-    
-    static bool flag_first_call = true;
-    
-    if (flag_first_call || flag_polyInit) /*** case 1: polynomial initialization ***/
-    {
-      flag_first_call = false;
-
-      /* basic params */
-      Eigen::Matrix3d headState, tailState;
-      Eigen::MatrixXd innerPs;
-      Eigen::VectorXd piece_dur_vec;
-      int piece_nums;
-      constexpr double init_of_init_totaldur = 2.0;
-      headState << start_pt, start_vel, start_acc;
-      tailState << local_target_pt, local_target_vel, Eigen::Vector3d::Zero();
-
-      /* determined or random inner point */
-      if (!flag_randomPolyTraj)
-      {
-        if (innerPs.cols() != 0)
-        {
-          ROS_ERROR("innerPs.cols() != 0");
-        }
-
-        piece_nums = 1;
-        piece_dur_vec.resize(1);
-        piece_dur_vec(0) = init_of_init_totaldur;
-      }
-      else
-      {
-        Eigen::Vector3d horizen_dir = ((start_pt - local_target_pt).cross(Eigen::Vector3d(0, 0, 1))).normalized();
-        Eigen::Vector3d vertical_dir = ((start_pt - local_target_pt).cross(horizen_dir)).normalized();
-        innerPs.resize(3, 1);
-        innerPs = (start_pt + local_target_pt) / 2 +
-                  (((double)rand()) / RAND_MAX - 0.5) *
-                      (start_pt - local_target_pt).norm() *
-                      horizen_dir * 0.8 * (-0.978 / (continous_failures_count_ + 0.989) + 0.989) +
-                  (((double)rand()) / RAND_MAX - 0.5) *
-                      (start_pt - local_target_pt).norm() *
-                      vertical_dir * 0.4 * (-0.978 / (continous_failures_count_ + 0.989) + 0.989);
-
-        piece_nums = 2;
-        piece_dur_vec.resize(2);
-        piece_dur_vec = Eigen::Vector2d(init_of_init_totaldur / 2, init_of_init_totaldur / 2);
-      }
-
-      /* generate the init of init trajectory */
-      initMJO.reset(headState, tailState, piece_nums);
-      initMJO.generate(innerPs, piece_dur_vec);
-      poly_traj::Trajectory initTraj = initMJO.getTraj();
-      
-      /* generate the real init trajectory */
-      piece_nums = round((headState.col(0) - tailState.col(0)).norm() / pp_.polyTraj_piece_length);
-      if (piece_nums < 2)
-        piece_nums = 2;
-      double piece_dur = init_of_init_totaldur / (double)piece_nums;
-      piece_dur_vec.resize(piece_nums);
-      piece_dur_vec = Eigen::VectorXd::Constant(piece_nums, ts);
-      innerPs.resize(3, piece_nums - 1);
-      int id = 0;
-      double t_s = piece_dur, t_e = init_of_init_totaldur - piece_dur / 2;
-      for (double t = t_s; t < t_e; t += piece_dur)
-      {
-        innerPs.col(id++) = initTraj.getPos(t);
-      }
-      if (id != piece_nums - 1)
-      {
-        ROS_ERROR("Should not happen! x_x");
-        return false;
-      }
-      initMJO.reset(headState, tailState, piece_nums);
-      initMJO.generate(innerPs, piece_dur_vec);
-    }
-    else /*** case 2: initialize from previous optimal trajectory ***/
-    {
-      if (traj_.global_traj.last_glb_t_of_lc_tgt < 0.0)
-      {
-        ROS_ERROR("You are initialzing a trajectory from a previous optimal trajectory, but no previous trajectories up to now.");
-        return false;
-      }
-      
-      /* the trajectory time system is a little bit complicated... */
-      double passed_t_on_lctraj = ros::Time::now().toSec() - traj_.local_traj.start_time;
-      double t_to_lc_end = traj_.local_traj.duration - passed_t_on_lctraj;
-      double t_to_lc_tgt = t_to_lc_end +
-                           (traj_.global_traj.glb_t_of_lc_tgt - traj_.global_traj.last_glb_t_of_lc_tgt);
-      int piece_nums = ceil((start_pt - local_target_pt).norm() / pp_.polyTraj_piece_length);
-      if (piece_nums < 2)
-        piece_nums = 2;
-
-      Eigen::Matrix3d headState, tailState;
-      Eigen::MatrixXd innerPs(3, piece_nums - 1);
-      Eigen::VectorXd piece_dur_vec = Eigen::VectorXd::Constant(piece_nums, t_to_lc_tgt / piece_nums);
-      headState << start_pt, start_vel, start_acc;
-      tailState << local_target_pt, local_target_vel, Eigen::Vector3d::Zero();
-
-      double t = piece_dur_vec(0);
-      for (int i = 0; i < piece_nums - 1; ++i)
-      {
-        if (t < t_to_lc_end)
-        {
-          innerPs.col(i) = traj_.local_traj.traj.getPos(t + passed_t_on_lctraj);
-        }
-        else if (t <= t_to_lc_tgt)
-        {
-          double glb_t = t - t_to_lc_end + traj_.global_traj.last_glb_t_of_lc_tgt - traj_.global_traj.global_start_time;
-          innerPs.col(i) = traj_.global_traj.traj.getPos(glb_t);
-        }
-        else
-        {
-          ROS_ERROR("Should not happen! x_x 0x88");
-        }
-
-        t += piece_dur_vec(i + 1);
-      }
-
-      initMJO.reset(headState, tailState, piece_nums);
-      initMJO.generate(innerPs, piece_dur_vec);
-    }
-
-    return true;
-  }
-
   bool EGOPlannerManager::computeInitReferenceState(const Eigen::Vector3d &start_pt, 
                                                     const Eigen::Vector3d &start_vel, 
                                                     const Eigen::Vector3d &start_acc,
@@ -308,20 +179,13 @@ namespace ego_planner
       const bool use_formation)
   {
     static int count = 0;
-    // if (count == 0) {
-    //   global_start_time_ = ros::Time::now();
-    // }
+
     printf("\033[47;30m\n[drone %d replan %d]==============================================\033[0m\n",
            pp_.drone_id, count++);
-    // cout.precision(3);
-    // cout << "start: " << start_pt.transpose() << ", " << start_vel.transpose() << "\ngoal:" << local_target_pt.transpose() << ", " << local_target_vel.transpose()
-    //      << endl;
 
     if ((start_pt - local_target_pt).norm() < 0.2)
     {
       cout << "Close to goal" << endl;
-      // continous_failures_count_++;
-      // return false;
     }
 
     ros::Time t_start = ros::Time::now();
@@ -330,15 +194,6 @@ namespace ego_planner
     /*** STEP 1: INIT ***/
     double ts = pp_.polyTraj_piece_length / pp_.max_vel_;
 
-    /* Don't use the follow init trajectory */
-    // if (!computeInitState(start_pt, start_vel, start_acc, 
-    //                       local_target_pt, local_target_vel,
-    //                       flag_polyInit, flag_randomPolyTraj, ts, initMJO))
-    // {
-    //   return false;
-    // }
-
-    /* well designed front-end init trajectory for ESDF-based planner */
     poly_traj::MinJerkOpt initMJO;
     if (!computeInitReferenceState(start_pt, start_vel, start_acc, 
                                    local_target_pt, local_target_vel,

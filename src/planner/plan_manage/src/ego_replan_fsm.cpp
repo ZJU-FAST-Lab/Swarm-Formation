@@ -142,7 +142,7 @@ namespace ego_planner
     {
       if (planner_manager_->pp_.drone_id <= 0 || (planner_manager_->pp_.drone_id >= 1 && have_recv_pre_agent_))
       {        
-        bool success = planFromGlobalTraj(1); // zx-todo
+        bool success = planFromGlobalTraj(1);
         
         if (success)
         {
@@ -151,7 +151,7 @@ namespace ego_planner
         else
         {
           ROS_ERROR("Failed to generate the first trajectory!!!");
-          changeFSMExecState(SEQUENTIAL_START, "FSM"); // "changeFSMExecState" must be called each time planned
+          changeFSMExecState(SEQUENTIAL_START, "FSM");
         }
       }
 
@@ -161,7 +161,7 @@ namespace ego_planner
     case GEN_NEW_TRAJ:
     {
       
-      bool success = planFromGlobalTraj(1); // zx-todo
+      bool success = planFromGlobalTraj(1);
       if (success)
       {
         changeFSMExecState(EXEC_TRAJ, "FSM");
@@ -169,10 +169,8 @@ namespace ego_planner
       }
       else
       {
-        have_target_ = false;                           // debug
-        changeFSMExecState(WAIT_TARGET, "FSM");         // debug
-        // changeFSMExecState(GEN_NEW_TRAJ, "FSM"); // "changeFSMExecState" must be called each time planned
-        // goto force_return;
+        have_target_ = false;                           
+        changeFSMExecState(WAIT_TARGET, "FSM");    
       }
       break;
     }
@@ -297,27 +295,6 @@ namespace ego_planner
 
       bool occ = false;
       occ |= map->getInflateOccupancy(info->traj.getPos(t));
-
-      // for (size_t id = 0; id < planner_manager_->traj_.swarm_traj.size(); id++)
-      // {
-      //   if ((planner_manager_->traj_.swarm_traj.at(id).drone_id != (int)id) ||
-      //       (planner_manager_->traj_.swarm_traj.at(id).drone_id == planner_manager_->pp_.drone_id))
-      //   {
-      //     continue;
-      //   }
-
-      //   double t_X = t_cur_global - planner_manager_->traj_.swarm_traj.at(id).start_time;
-      //   Eigen::Vector3d swarm_pridicted = planner_manager_->traj_.swarm_traj.at(id).traj.getPos(t_X);
-      //   double dist = (p_cur - swarm_pridicted).norm();
-
-      //   if (dist < CLEARANCE)
-      //   {
-      //     ROS_WARN("swarm distance between drone %d and drone %d is %f, too close!",
-      //              planner_manager_->pp_.drone_id, id, dist);
-      //     occ = true;
-      //     break;
-      //   }
-      // }
 
       if (occ)
       {
@@ -725,9 +702,6 @@ namespace ego_planner
     traj_utils::PolyTraj msg;
     polyTraj2ROSMsg(msg);
     poly_traj_pub_.publish(msg);
-
-    /* !!!! Do not broadcast emergency stop trajectory because of foramtion */
-    // broadcast_ploytraj_pub_.publish(msg);
 
     return true;
   }
