@@ -55,19 +55,19 @@
   <build_depend>plan_env</build_depend>
   <build_depend>path_searching</build_depend>
   <build_depend>traj_utils</build_depend>
-  <build_depend>frob_test</build_depend>
+  <build_depend>swarm_graph</build_depend>
   <build_export_depend>roscpp</build_export_depend>
   <build_export_depend>rospy</build_export_depend>
   <build_export_depend>std_msgs</build_export_depend>
   <build_export_depend>plan_env</build_export_depend>
-  <build_export_depend>frob_test</build_export_depend>
+  <build_export_depend>swarm_graph</build_export_depend>
   <build_export_depend>path_searching</build_export_depend>
   <build_export_depend>traj_utils</build_export_depend>
   <exec_depend>roscpp</exec_depend>
   <exec_depend>rospy</exec_depend>
   <exec_depend>std_msgs</exec_depend>
   <exec_depend>plan_env</exec_depend>
-  <exec_depend>frob_test</exec_depend>
+  <exec_depend>swarm_graph</exec_depend>
   <exec_depend>path_searching</exec_depend>
   <exec_depend>traj_utils</exec_depend>
 

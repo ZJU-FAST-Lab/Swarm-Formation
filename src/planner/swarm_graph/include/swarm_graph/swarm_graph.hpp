@@ -56,11 +56,9 @@ public:
     Eigen::Vector3d getGrad(int id);
     bool getGrad(std::vector<Eigen::Vector3d> &swarm_grad);
 
-    //Helper functions for assignment tasks
+    //Helper functions
     std::vector<Eigen::Vector3d> getDesNodesInit() { return nodes_des_init; }
     std::vector<Eigen::Vector3d> getDesNodesCur() { return nodes_des; }
-
-    void setDesiredAssignment( const std::vector<int> &assignment );
 
     typedef std::unique_ptr<SwarmGraph> Ptr;
 

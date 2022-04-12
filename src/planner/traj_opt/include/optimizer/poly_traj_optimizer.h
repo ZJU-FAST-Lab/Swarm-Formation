@@ -10,7 +10,7 @@
 #include <traj_utils/Assignment.h>
 #include "poly_traj_utils.hpp"
 #include "munkres_algorithm.hpp"
-#include <frob_test/swarm_graph.hpp>
+#include <swarm_graph/swarm_graph.hpp>
 #include <fstream>
 
 namespace ego_planner
@@ -56,7 +56,7 @@ namespace ego_planner
         buf.direction[i - start] = direction[i];
       }
     }
-    
+
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
   };
 

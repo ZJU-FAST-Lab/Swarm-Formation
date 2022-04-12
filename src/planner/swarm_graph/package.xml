@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>frob_test</name>
+  <name>swarm_graph</name>
   <version>0.0.0</version>
-  <description>The frob_test package</description>
+  <description>The swarm_graph package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
@@ -19,7 +19,7 @@
   <!-- Url tags are optional, but multiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
   <!-- Example: -->
-  <!-- <url type="website">http://wiki.ros.org/frob_test</url> -->
+  <!-- <url type="website">http://wiki.ros.org/swarm_graph</url> -->
 
 
   <!-- Author tags are optional, multiple are allowed, one per tag -->

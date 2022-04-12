@@ -26,8 +26,7 @@
     <arg name="weight_sqrvariance"      value="10000.0"/>
     <arg name="weight_time"             value="80.0"/>
     <arg name="weight_formation"        value="15000.0"/>
-    <arg name="weight_gather"           value="100.0"/>
-    
+
     <arg name="obstacle_clearance"      value="0.5"/>
     <arg name="swarm_clearance"         value="0.5"/>
     

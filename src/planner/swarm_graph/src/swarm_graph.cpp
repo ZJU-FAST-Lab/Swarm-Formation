@@ -1,4 +1,4 @@
-#include <frob_test/swarm_graph.hpp>
+#include <swarm_graph/swarm_graph.hpp>
    
 SwarmGraph::SwarmGraph(){   
     have_desired = false;
@@ -82,7 +82,7 @@ bool SwarmGraph::calcMatrices( const std::vector<Eigen::Vector3d> &swarm,
 }
 
 double SwarmGraph::calcDist2( const Eigen::Vector3d &v1, const Eigen::Vector3d &v2){
-    return (v1-v2).cwiseAbs2().sum(); 
+    return (v1-v2).norm(); 
 }
 
 
@@ -147,17 +147,6 @@ bool SwarmGraph::calcFGrad( Eigen::Vector3d &gradp, int idx ){
         ROS_WARN( "Invalid desired formation." );
         return false;
     }
-}
-
-void SwarmGraph::setDesiredAssignment( const std::vector<int> &assignment )
-{
-    std::vector<Eigen::Vector3d> swarm_new;
-    swarm_new.clear();
-
-    for( auto iter: assignment )
-        swarm_new.push_back( nodes_des_init[iter] );
-    
-    setDesiredForm( swarm_new );
 }
 
 Eigen::Vector3d SwarmGraph::getGrad(int id){
