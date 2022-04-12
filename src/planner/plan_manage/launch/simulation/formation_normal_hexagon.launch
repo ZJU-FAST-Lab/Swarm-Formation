@@ -5,18 +5,7 @@
 
     <arg name="odom_topic" value="visual_slam/odom" />
     
-    <!-- 
-        formation_type : 
-            0 : no formation  
-            1 : rectangle with a center (5 drones)
-            2 : rgular tetrahedron (4 drones)
-            3 : hexagon (7 drones)
-            4 : z_letter (10 drones)
-            5 : j_letter (9 drones)
-            6 : u_letter (8 drones)
-            7 : Normal hexagon (7 drones)
-     -->
-    <arg name="formation_type" value="7" />
+    <arg name="formation_type" value="1" />
 
     <!-- 
         optimization parameters :
@@ -83,7 +72,7 @@
         <param name="pub_rate"   value="1.0"/>  
         <param name="min_distance" value="0.8"/>         
     </node>
-    
+
     <include file="$(find ego_planner)/launch/run_in_sim.launch">
         <arg name="drone_id" value="0"/>
 

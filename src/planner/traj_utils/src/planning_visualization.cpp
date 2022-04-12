@@ -200,60 +200,6 @@ namespace ego_planner
       line_size_      = 0;
       break;
     }
-    
-    case FORMATION_TYPE::RECTANGLE_WITH_CENTER:
-    {
-      formation_size_ = 5;
-      line_size_      = 0;
-      break;
-    }
-
-    case FORMATION_TYPE::REGULAR_TETRAHEDRON:
-    {
-      formation_size_ = 4;
-      line_size_      = 0;
-      break;
-    }
-
-    case FORMATION_TYPE::HEXAGON:
-    { 
-      formation_size_ = 7;
-      line_size_      = 0;
-      break;
-    }
-
-    case FORMATION_TYPE::Z_LETTER:
-    { 
-      formation_size_ = 11;
-      line_size_      = 10;
-      line_begin_.resize(line_size_);
-      line_end_.resize(line_size_);
-      line_begin_ = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-      line_end_   = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-      break;
-    }
-
-    case FORMATION_TYPE::J_LETTER:
-    {
-      formation_size_ = 8;
-      line_size_      = 7;
-      line_begin_.resize(line_size_);
-      line_end_.resize(line_size_);
-      line_begin_ = {0, 1, 1, 3, 4, 5, 6};
-      line_end_   = {1, 2, 3, 4, 5, 6, 7};
-      break;
-    }
-
-    case FORMATION_TYPE::U_LETTER:
-    {
-      formation_size_ = 8;
-      line_size_      = 7;
-      line_begin_.resize(line_size_);
-      line_end_.resize(line_size_);
-      line_begin_ = {0, 1, 2, 3, 4, 5, 6};
-      line_end_   = {1, 2, 3, 4, 5, 6, 7};
-      break;
-    }
 
     case FORMATION_TYPE::REGULAR_HEXAGON:
     {
@@ -263,44 +209,7 @@ namespace ego_planner
       line_end_.resize(line_size_);
       line_begin_ = {0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6};
       line_end_   = {1, 2, 3, 4, 5, 6, 2, 3, 4, 5, 6, 1};
-
-      // only for vrb
-      // line_begin_ = {1, 1, 1, 1, 1, 1, 2, 3, 4, 5, 6, 7};
-      // line_end_   = {2, 3, 4, 5, 6, 7, 3, 4, 5, 6, 7, 2};
       
-      break;
-    }
-
-    case FORMATION_TYPE::HEART:
-    {
-      formation_size_ = 10;
-      line_size_      = 10;
-      line_begin_.resize(line_size_);
-      line_end_.resize(line_size_);
-      line_begin_ = {1, 2, 3, 0, 4, 5, 6, 7, 8, 9};
-      line_end_   = {2, 3, 0, 4, 5, 6, 7, 8, 9, 1};
-      break;
-    }
-    
-    case FORMATION_TYPE::NUM_TWO:
-    {
-      formation_size_ = 12;
-      line_size_      = 11;
-      line_begin_.resize(line_size_);
-      line_end_.resize(line_size_);
-      line_begin_ = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-      line_end_   = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
-      break;
-    }
-
-    case FORMATION_TYPE::NUM_ZERO:
-    {
-      formation_size_ = 12;
-      line_size_      = 12;
-      line_begin_.resize(line_size_);
-      line_end_.resize(line_size_);
-      line_begin_ = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
-      line_end_   = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0};
       break;
     }
     
