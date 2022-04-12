@@ -60,7 +60,7 @@ namespace ego_planner
 
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
   };
-
+  
   class PolyTrajOptimizer
   {
 
