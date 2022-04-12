@@ -92,7 +92,7 @@
          -->
         <param name="fix_obs_type" value="0"/>
         
-        <param name="map/obs_num"    value="0"/>
+        <param name="map/obs_num"    value="60"/>
         <param name="ObstacleShape/lower_rad" value="0.5"/>
         <param name="ObstacleShape/upper_rad" value="0.5"/>
         <param name="ObstacleShape/lower_hei" value="2.0"/>

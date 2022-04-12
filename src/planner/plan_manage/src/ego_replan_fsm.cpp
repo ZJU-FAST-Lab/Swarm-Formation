@@ -78,9 +78,9 @@ namespace ego_planner
     else if (target_type_ == TARGET_TYPE::PRESET_TARGET)
     {
       trigger_sub_ = nh.subscribe("/traj_start_trigger", 1, &EGOReplanFSM::triggerCallback, this);
-      ROS_INFO("Wait for 1 second.");
+      ROS_INFO("Wait for 2 second.");
       int count = 0;
-      while (ros::ok() && count++ < 1000)
+      while (ros::ok() && count++ < 2000)
       {
         ros::spinOnce();
         ros::Duration(0.001).sleep();
@@ -105,9 +105,9 @@ namespace ego_planner
       // wait to add a switch formation assignment callback()
       // assignment_sub_ = nh.subscribe("/swarm_formation_assignment", 1, &EGOReplanFSM::reAssignmentCallback, this);
 
-      ROS_INFO("Wait for 1 second.");
+      ROS_INFO("Wait for 3 second.");
       int count = 0;
-      while (ros::ok() && count++ < 1000)
+      while (ros::ok() && count++ < 3000)
       {
         ros::spinOnce();
         ros::Duration(0.001).sleep();
