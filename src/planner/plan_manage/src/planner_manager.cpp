@@ -203,12 +203,8 @@ namespace ego_planner
     }
     
     Eigen::MatrixXd cstr_pts = initMJO.getInitConstrainPoints(ploy_traj_opt_->get_cps_num_prePiece_());
-    
-    // wait to delete
-    // vector<std::pair<int, int>> segments;
-    // segments = ploy_traj_opt_->setAndFinelyCheckConstrainPoints(cstr_pts, true);
     ploy_traj_opt_->setControlPoints(cstr_pts);
-    
+
     t_init = ros::Time::now() - t_start;
 
     std::vector<Eigen::Vector3d> point_set;

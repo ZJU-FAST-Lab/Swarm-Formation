@@ -156,22 +156,12 @@ namespace ego_planner
     bool OptimizeTrajectory_lbfgs(const Eigen::MatrixXd &iniState, const Eigen::MatrixXd &finState,
                             const Eigen::MatrixXd &initInnerPts, const Eigen::VectorXd &initT,
                             Eigen::MatrixXd &optimal_points, const bool use_formation);
-    // must be called after setAndFinelyCheckConstrainPoints()
-
-    /* check collision and set {p,v} pairs to constrain points */
-    std::vector<std::pair<int, int>> setAndFinelyCheckConstrainPoints(Eigen::MatrixXd &init_points,
-                                                                      bool flag_first_init = true);
-    
-    bool roughlyCheckConstrainPoints(void);
                                             
     void astarWithMinTraj( const Eigen::MatrixXd &iniState, 
                            const Eigen::MatrixXd &finState,
                            std::vector<Eigen::Vector3d> &simple_path,
                            Eigen::MatrixXd &ctl_points,
                            poly_traj::MinJerkOpt &frontendMJ);
-
-    /* multi-topo support */
-    std::vector<ConstrainPoints> distinctiveTrajs(vector<std::pair<int, int>> segments);
   
   private:
     /* callbacks by the L-BFGS optimizer */
