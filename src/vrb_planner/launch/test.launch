@@ -1,0 +1,22 @@
+<launch>
+  <arg name="form_coef" value="7.0"/>
+  <arg name="obs_coef" value="18.0"/>
+  <arg name="swarm_coef" value="5.0"/>
+
+  <arg name="sigma_1" value="7.0"/>
+  <arg name="sigma_2" value="18.0"/>
+  <arg name="swarm_clearance" value="0.4"/>
+  <arg name="obs_clearance" value="0.8"/>
+  
+  <node pkg="frob_test" name="test_vrb" type="test_vrb" output="screen">
+    <param name="vrb/form_coef" value="$(arg form_coef)" type="double"/>
+    <param name="vrb/obs_coef" value="$(arg obs_coef)" type="double"/>
+    <param name="vrb/swarm_coef" value="$(arg swarm_coef)" type="double"/>
+
+    <param name="vrb/sigma_1" value="$(arg sigma_1)" type="double"/>
+    <param name="vrb/sigma_2" value="$(arg sigma_2)" type="double"/>
+    <param name="vrb/obs_clearance" value="$(arg obs_clearance)" type="double"/>
+    <param name="vrb/swarm_clearance" value="$(arg swarm_clearance)" type="double"/>
+  </node>
+
+</launch>

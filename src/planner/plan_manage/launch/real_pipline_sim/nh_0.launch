@@ -1,0 +1,220 @@
+<launch>
+    <!-- size of map, change the size inflate x, y, z according to your application -->
+    <arg name="map_size_x" value="120.0"/>
+    <arg name="map_size_y" value="40.0"/>
+    <arg name="map_size_z" value="3.0"/>
+    
+    <arg name="drone_id" value="0"/>
+    <arg name="init_x" value="-40.0"/>
+    <arg name="init_y" value="0.0"/>
+    <arg name="init_z" value="1.0"/>
+       
+    <arg name="goal_num"  value="7" />
+    <arg name="target0_x" value="40.0" />
+    <arg name="target0_y" value="0.0" />
+    <arg name="target0_z" value="1.0" />
+
+    <arg name="target1_x" value="42.6" />
+    <arg name="target1_y" value="-1.5" />
+    <arg name="target1_z" value="1.0" />
+
+    <arg name="target2_x" value="40.0" />
+    <arg name="target2_y" value="-3.0" />
+    <arg name="target2_z" value="1.0" />
+
+    <arg name="target3_x" value="37.4" />
+    <arg name="target3_y" value="-1.5" />
+    <arg name="target3_z" value="1.0" />
+
+    <arg name="target4_x" value="37.4" />
+    <arg name="target4_y" value="1.5" />
+    <arg name="target4_z" value="1.0" />
+
+    <arg name="target5_x" value="40.0" />
+    <arg name="target5_y" value="3.0" />
+    <arg name="target5_z" value="1.0" />
+        
+    <arg name="target6_x" value="42.6" />
+    <arg name="target6_y" value="1.5" />
+    <arg name="target6_z" value="1.0" />
+
+    <arg name="target7_x" value="0.0" />
+    <arg name="target7_y" value="0.0" />
+    <arg name="target7_z" value="0.0" />
+
+    <arg name="target8_x" value="0.0" />
+    <arg name="target8_y" value="0.0" />
+    <arg name="target8_z" value="0.0" />
+
+    <arg name="target9_x" value="0.0" />
+    <arg name="target9_y" value="0.0" />
+    <arg name="target9_z" value="0.0" />
+    
+    <!-- 
+        formation_type : 
+            0 : no formation  
+            1 : rectangle with a center (5 drones)
+            2 : rgular tetrahedron (4 drones)
+            3 : hexagon (7 drones)
+            4 : z_letter (10 drones)
+            5 : j_letter (9 drones)
+            6 : u_letter (8 drones)
+            7 : Normal hexagon (7 drones)
+     -->
+    <arg name="formation_type"  value="7" />
+    <arg name="weight_obstacle"         value="30000.0"/>
+    <arg name="weight_swarm"            value="100000.0"/>
+    <arg name="weight_feasibility"      value="1000.0"/>
+    <arg name="weight_sqrvariance"      value="10000.0"/>
+    <arg name="weight_time"             value="200.0"/>
+    <arg name="weight_formation"        value="15000.0"/>
+    <arg name="weight_gather"           value="30.0"/>
+
+    <arg name="obstacle_clearance"      value="0.5"/>
+    <arg name="swarm_clearance"         value="0.5"/>
+    <arg name="swarm_gather_threshold"  value="5.0"/>
+    
+    <!-- topic of your odometry such as VIO or LIO -->
+    <arg name="odom_topic" value="visual_slam/odom" />
+    <!-- number of moving objects -->
+    <arg name="obj_num" value="8" />
+    <!-- main algorithm params -->
+    <include file="$(find ego_planner)/launch/real_pipline_sim/advanced_param_real.xml">
+        <arg name="drone_id"                value="$(arg drone_id)"/>
+        <arg name="formation_type"          value="$(arg formation_type)"/>
+        <arg name="map_size_x_"             value="$(arg map_size_x)"/>
+        <arg name="map_size_y_"             value="$(arg map_size_y)"/>
+        <arg name="map_size_z_"             value="$(arg map_size_z)"/>
+        <arg name="weight_obstacle"         value="$(arg weight_obstacle)"/>
+        <arg name="weight_swarm"            value="$(arg weight_swarm)"/>
+        <arg name="weight_feasibility"      value="$(arg weight_feasibility)"/>
+        <arg name="weight_sqrvariance"      value="$(arg weight_sqrvariance)"/>
+        <arg name="weight_time"             value="$(arg weight_time)"/>
+        <arg name="weight_formation"        value="$(arg weight_formation)"/>
+        <arg name="weight_gather"           value="$(arg weight_gather)"/>
+        <arg name="obstacle_clearance"      value="$(arg obstacle_clearance)"/>
+        <arg name="swarm_clearance"         value="$(arg swarm_clearance)"/>
+        <arg name="swarm_gather_threshold"  value="$(arg swarm_gather_threshold)"/>
+        <!-- camera pose: transform of camera frame in the world frame -->
+        <!-- depth topic: depth image, 640x480 by default -->
+        <!-- don't set cloud_topic if you already set these ones! -->
+        <arg name="odometry_topic" value="$(arg odom_topic)"/>
+        <arg name="obj_num_set" value="$(arg obj_num)" />
+        <arg name="camera_pose_topic" value="pcl_render_node/camera_pose"/>
+        <arg name="depth_topic" value="pcl_render_node/depth"/>
+        <!-- topic of point cloud measurement, such as from LIDAR  -->
+        <!-- don't set camera pose and depth, if you already set this one! -->
+        <arg name="cloud_topic" value="pcl_render_node/cloud"/>
+        <!-- intrinsic params of the depth camera -->
+        <arg name="cx" value="321.04638671875"/>
+        <arg name="cy" value="243.44969177246094"/>
+        <arg name="fx" value="387.229248046875"/>
+        <arg name="fy" value="387.229248046875"/>
+        <!-- maximum velocity and acceleration the drone will reach -->
+        <arg name="max_vel" value="3" /><!--1.7*sqrt(3)-->
+        <arg name="max_acc" value="10" /><!--6.2*sqrt(3)-->
+        <!--always set to 1.5 times grater than sensing horizen-->
+        <arg name="planning_horizon" value="7.5" />
+        <arg name="use_distinctive_trajs" value="false" />
+        <!-- 1: use 2D Nav Goal to select goal  -->
+        <!-- 2: use global waypoints below  -->
+        <!-- 3: use swarm formation global waypoints below  -->
+        <arg name="flight_type" value="3" />
+        <!-- global waypoints -->
+        <!-- It generates a piecewise min-snap traj passing all waypoints -->
+        <arg name="point_num" value="0" />
+        <arg name="point0_x" value="0.0" />
+        <arg name="point0_y" value="0.0" />
+        <arg name="point0_z" value="0.0" />
+        
+        <arg name="point1_x" value="0.0" />
+        <arg name="point1_y" value="0.0" />
+        <arg name="point1_z" value="0.0" />
+
+        <arg name="point2_x" value="0.0" />
+        <arg name="point2_y" value="0.0" />
+        <arg name="point2_z" value="0.0" />
+
+        <arg name="point3_x" value="0.0" />
+        <arg name="point3_y" value="0.0" />
+        <arg name="point3_z" value="0.0" />
+        
+        <!-- <arg name="point0_x" value="$(arg point0_x)" />
+        <arg name="point0_y" value="$(arg point0_y)" />
+        <arg name="point0_z" value="$(arg point0_z)" />
+
+        <arg name="point1_x" value="$(arg point1_x)" />
+        <arg name="point1_y" value="$(arg point1_y)" />
+        <arg name="point1_z" value="$(arg point1_z)" />
+        
+        <arg name="point2_x" value="$(arg point2_x)" />
+        <arg name="point2_y" value="$(arg point2_y)" />
+        <arg name="point2_z" value="$(arg point2_z)" />
+
+        <arg name="point3_x" value="$(arg target_x)" />
+        <arg name="point3_y" value="$(arg target_y)" />
+        <arg name="point3_z" value="$(arg target_z)" /> -->
+
+        <!-- swarm formation global waypoints -->
+        <arg name="goal_num"  value="$(arg goal_num)" />
+        <arg name="target0_x" value="$(arg target0_x)" />
+        <arg name="target0_y" value="$(arg target0_y)" />
+        <arg name="target0_z" value="$(arg target0_z)" />
+
+        <arg name="target1_x" value="$(arg target1_x)" />
+        <arg name="target1_y" value="$(arg target1_y)" />
+        <arg name="target1_z" value="$(arg target1_z)" />
+
+        <arg name="target2_x" value="$(arg target2_x)" />
+        <arg name="target2_y" value="$(arg target2_y)" />
+        <arg name="target2_z" value="$(arg target2_z)" />
+
+        <arg name="target3_x" value="$(arg target3_x)" />
+        <arg name="target3_y" value="$(arg target3_y)" />
+        <arg name="target3_z" value="$(arg target3_z)" />
+
+        <arg name="target4_x" value="$(arg target4_x)" />
+        <arg name="target4_y" value="$(arg target4_y)" />
+        <arg name="target4_z" value="$(arg target4_z)" />
+
+        <arg name="target5_x" value="$(arg target5_x)" />
+        <arg name="target5_y" value="$(arg target5_y)" />
+        <arg name="target5_z" value="$(arg target5_z)" />
+        
+        <arg name="target6_x" value="$(arg target6_x)" />
+        <arg name="target6_y" value="$(arg target6_y)" />
+        <arg name="target6_z" value="$(arg target6_z)" />
+
+        <arg name="target7_x" value="$(arg target7_x)" />
+        <arg name="target7_y" value="$(arg target7_y)" />
+        <arg name="target7_z" value="$(arg target7_z)" />
+
+        <arg name="target8_x" value="$(arg target8_x)" />
+        <arg name="target8_y" value="$(arg target8_y)" />
+        <arg name="target8_z" value="$(arg target8_z)" />
+
+        <arg name="target9_x" value="$(arg target9_x)" />
+        <arg name="target9_y" value="$(arg target9_y)" />
+        <arg name="target9_z" value="$(arg target9_z)" />
+
+    </include>
+    <!-- trajectory server -->
+    <node pkg="ego_planner" name="drone_$(arg drone_id)_traj_server" type="traj_server" output="screen">
+        <remap from="position_cmd" to="drone_$(arg drone_id)_planning/pos_cmd"/>
+        <remap from="~planning/trajectory" to="drone_$(arg drone_id)_planning/trajectory"/>
+        <remap from="~planning/start" to="drone_$(arg drone_id)_planning/start"/>
+        <remap from="~planning/finish" to="drone_$(arg drone_id)_planning/finish"/>
+        <param name="traj_server/time_forward" value="1.0" type="double"/>
+    </node>
+    <!-- use simulator -->
+    <include file="$(find ego_planner)/launch/simulator.xml">
+        <arg name="drone_id" value="$(arg drone_id)"/>
+        <arg name="map_size_x_" value="$(arg map_size_x)"/>
+        <arg name="map_size_y_" value="$(arg map_size_y)"/>
+        <arg name="map_size_z_" value="$(arg map_size_z)"/>
+        <arg name="init_x_" value="$(arg init_x)"/>
+        <arg name="init_y_" value="$(arg init_y)"/>
+        <arg name="init_z_" value="$(arg init_z)"/>
+        <arg name="odometry_topic" value="$(arg odom_topic)" />
+    </include>
+</launch>

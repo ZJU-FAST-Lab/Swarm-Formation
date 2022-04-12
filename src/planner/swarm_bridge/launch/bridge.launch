@@ -1,0 +1,16 @@
+<launch>
+
+  <arg name="drone_id"/>
+  <arg name="broadcast_ip"/>
+
+  <node pkg="swarm_bridge" name="drone_$(arg drone_id)_bridge_node" type="bridge_node" output="screen">
+  
+    <remap from="~my_odom" to="/vins_estimator/imu_propagate"/>
+
+    <param name="broadcast_ip" value="$(arg broadcast_ip)" type="string"/>
+    <param name="drone_id" value="$(arg drone_id)"/>
+    <param name="odom_max_freq" value="70"/>
+
+  </node>
+
+</launch>
