@@ -16,7 +16,7 @@ find_package(catkin REQUIRED COMPONENTS
 
 catkin_package(
    INCLUDE_DIRS include
-   LIBRARIES swarm_graph sim_anneal
+   LIBRARIES swarm_graph
    CATKIN_DEPENDS message_runtime roscpp std_msgs tf
 #  DEPENDS system_lib
 )
@@ -39,14 +39,6 @@ add_library(swarm_graph
   src/swarm_graph.cpp
 )
 
-
-add_library(sim_anneal
-  src/sim_anneal.cpp
-)
-
-target_link_libraries(sim_anneal
-  ${catkin_LIBRARIES} swarm_graph
-)
 
 
 

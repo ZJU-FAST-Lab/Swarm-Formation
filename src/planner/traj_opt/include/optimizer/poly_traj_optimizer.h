@@ -11,7 +11,6 @@
 #include "poly_traj_utils.hpp"
 #include "munkres_algorithm.hpp"
 #include <frob_test/swarm_graph.hpp>
-#include <frob_test/sim_anneal.hpp>
 #include <fstream>
 
 namespace ego_planner
@@ -57,13 +56,13 @@ namespace ego_planner
         buf.direction[i - start] = direction[i];
       }
     }
-
+    
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
   };
 
   class PolyTrajOptimizer
   {
-
+  
   private:
     GridMap::Ptr grid_map_;
     AStar::Ptr a_star_;
@@ -71,7 +70,6 @@ namespace ego_planner
     SwarmTrajData *swarm_trajs_{NULL}; // Can not use shared_ptr and no need to free
     ConstrainPoints cps_;
     SwarmGraph::Ptr swarm_graph_;
-    SimAnneal sim_anneal_;
 
     int drone_id_;
     int cps_num_prePiece_; // number of distinctive constrain points each piece

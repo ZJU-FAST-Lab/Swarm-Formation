@@ -66,8 +66,8 @@
         <arg name="fx" value="387.229248046875"/>
         <arg name="fy" value="387.229248046875"/>
         <!-- maximum velocity and acceleration the drone will reach -->
-        <arg name="max_vel" value="1.5" /><!--1.7*sqrt(3)-->
-        <arg name="max_acc" value="8.0" /><!--6.2*sqrt(3)-->
+        <arg name="max_vel" value="1.5" />
+        <arg name="max_acc" value="8.0" />
         <!--always set to 1.5 times grater than sensing horizen-->
         <arg name="planning_horizon" value="7.5" />
         <arg name="use_distinctive_trajs" value="false" />
@@ -92,22 +92,6 @@
         <arg name="point3_x" value="0.0" />
         <arg name="point3_y" value="0.0" />
         <arg name="point3_z" value="0.0" />
-        
-        <!-- <arg name="point0_x" value="$(arg point0_x)" />
-        <arg name="point0_y" value="$(arg point0_y)" />
-        <arg name="point0_z" value="$(arg point0_z)" />
-
-        <arg name="point1_x" value="$(arg point1_x)" />
-        <arg name="point1_y" value="$(arg point1_y)" />
-        <arg name="point1_z" value="$(arg point1_z)" />
-        
-        <arg name="point2_x" value="$(arg point2_x)" />
-        <arg name="point2_y" value="$(arg point2_y)" />
-        <arg name="point2_z" value="$(arg point2_z)" />
-
-        <arg name="point3_x" value="$(arg target_x)" />
-        <arg name="point3_y" value="$(arg target_y)" />
-        <arg name="point3_z" value="$(arg target_z)" /> -->
 
     </include>
     <!-- trajectory server -->
