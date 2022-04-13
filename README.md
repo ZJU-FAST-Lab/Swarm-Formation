@@ -42,7 +42,9 @@ roslaunch ego_planner normal_hexagon.launch
 ```
 Finally, you can see a normal hexagon formation navigating in random forest map.
 
-<img src="fig/normal_hexagon" width = "413" height = "232" border="5" />
+<p align = "center">
+<img src="fig/normal_hexagon.gif" width = "988" height = "412" border="3" />
+</p>
 
 If you find this work useful or interesting, please kindly give us a star :star:, thanks!:grinning:
 
@@ -58,6 +60,6 @@ The source code is released under [GPLv3](https://www.gnu.org/licenses/) license
 # Maintenance
 We are still working on extending the proposed system and improving code reliability.
 
-For any technical issues, please contact Lun Quan (lunquan@zju.edu.cn) or Fei GAO (fgaoaa@zju.edu.cn).
+For any technical issues, please contact Lun Quan (lunquan@zju.edu.cn) or Fei Gao (fgaoaa@zju.edu.cn).
 
-For commercial inquiries, please contact Fei GAO (fgaoaa@zju.edu.cn).
+For commercial inquiries, please contact Fei Gao (fgaoaa@zju.edu.cn).
