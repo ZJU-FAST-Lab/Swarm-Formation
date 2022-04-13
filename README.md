@@ -1,8 +1,8 @@
 # Swarm-Formation
 
-**Swarm-Formation** is a distributed swarm trajectory optimization framwork for formation flight in dense environments.
+**Swarm-Formation** is a distributed swarm trajectory optimization framework for formation flight in dense environments.
 - A differentiable graph-theory-based cost function that effectively describes the interaction topology of robots and quantifies the similarity distance between three-dimensional formations.
-- A spatial-temporal optimization framework with a joint cost function that takes formation similarity, obstacle avoidance, and dynamic feasibility into account, which makes the swarm robots has the ability to balance moving in formation while avoiding obstacles.
+- A spatial-temporal optimization framework with a joint cost function that takes formation similarity, obstacle avoidance, and dynamic feasibility into account, which makes the swarm robots possess the ability to move in formation while avoiding obstacles.
 
 
 # Updates
