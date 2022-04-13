@@ -33,7 +33,7 @@ git clone https://github.com/ZJU-FAST-Lab/Swarm-Formation.git
 cd Swarm-Formation
 catkin_make -j1
 source devel/setup.bash
-roslaunch ego_planner rivz.launch
+roslaunch ego_planner rviz.launch
 ```
 Then open a new command window in the same workspace and execute the following commands one by one.
 ```
