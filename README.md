@@ -25,6 +25,12 @@ If our source code is used in your academic projects, please cite our paper. Tha
 ```
 Video Links: [Bilibili](https://www.bilibili.com/video/BV1qv41137Si?spm_id_from=333.999.0.0) (only for Mainland China) or [Youtube](https://www.youtube.com/watch?v=lFumt0rJci4).
 
+<a href="https://www.youtube.com/watch?v=lFumt0rJci4" target="blank">
+  <p align="center">
+    <img src="fig/post.jpg" width="600"/>
+  </p>
+</a>
+
 # Quick Start within 3 Minutes
 Compiling tests passed on ubuntu 18.04 and 20.04 with ros installed. You can just execute the following commands one by one.
 ```
