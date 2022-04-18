@@ -44,6 +44,7 @@
   <arg name="weight_formation"/>
   <arg name="obstacle_clearance"/>
   <arg name="swarm_clearance"/>
+  <arg name="replan_trajectory_time"/>
   
   <!-- main node -->
   <!-- <node pkg="ego_planner" name="ego_planner_node" type="ego_planner_node" output="screen" launch-prefix="valgrind"> -->
@@ -72,6 +73,7 @@
     <param name="fsm/emergency_time"          value="1.0" type="double"/>
     <param name="fsm/realworld_experiment"    value="false"/>
     <param name="fsm/fail_safe"               value="true"/>
+    <param name="fsm/replan_trajectory_time"  value="$(arg replan_trajectory_time)" type="double"/>
 
     <param name="fsm/result_file" value="/home/zuzu/Documents/report/ego_swarm_1.txt"/>
 

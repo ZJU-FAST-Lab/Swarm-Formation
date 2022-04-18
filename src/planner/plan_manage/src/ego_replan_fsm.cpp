@@ -16,6 +16,7 @@ namespace ego_planner
     have_recv_pre_agent_ = false;
     flag_escape_emergency_ = true;
     flag_relan_astar_ = false;
+    have_local_traj_ = false;
 
     /*  fsm param  */
     nh.param("fsm/flight_type", target_type_, -1);
@@ -27,6 +28,8 @@ namespace ego_planner
     nh.param("fsm/realworld_experiment", flag_realworld_experiment_, false);
     nh.param("fsm/fail_safe", enable_fail_safe_, true);
     nh.param("fsm/result_file", result_fn_, string("/home/zuzu/Documents/Benchmark/21-RSS-ego-swarm/2.24/ego/ego_swarm.txt"));
+    nh.param("fsm/replan_trajectory_time", replan_trajectory_time_, 0.0);
+    
     have_trigger_ = !flag_realworld_experiment_;
     
     nh.param("fsm/waypoint_num", waypoint_num_, -1);
@@ -211,6 +214,7 @@ namespace ego_planner
         if (t_cur > info->duration - 0.2)
         {
           have_target_ = false;
+          have_local_traj_ = false;
 
           /* The navigation task completed */
           changeFSMExecState(WAIT_TARGET, "FSM");
@@ -675,12 +679,28 @@ namespace ego_planner
     planner_manager_->getLocalTarget(
         planning_horizen_, start_pt_, end_pt_,
         local_target_pt_, local_target_vel_);
+    
+    Eigen::Vector3d desired_start_pt, desired_start_vel, desired_start_acc;
+    double desired_start_time;
+    if (have_local_traj_ && use_formation){
+      desired_start_time = ros::Time::now().toSec() + replan_trajectory_time_;
+      desired_start_pt = 
+        planner_manager_->traj_.local_traj.traj.getPos(desired_start_time - planner_manager_->traj_.local_traj.start_time);
+      desired_start_vel = 
+        planner_manager_->traj_.local_traj.traj.getVel(desired_start_time - planner_manager_->traj_.local_traj.start_time);
+      desired_start_acc = 
+        planner_manager_->traj_.local_traj.traj.getAcc(desired_start_time - planner_manager_->traj_.local_traj.start_time);
+    } else{
+      desired_start_pt = start_pt_;
+      desired_start_vel = start_vel_;
+      desired_start_acc = start_acc_;
+    }
 
     bool plan_success = planner_manager_->reboundReplan(
-        start_pt_, start_vel_, start_acc_,
-        local_target_pt_, local_target_vel_,
+        desired_start_pt, desired_start_vel, desired_start_acc,
+        desired_start_time, local_target_pt_, local_target_vel_,
         (have_new_target_ || flag_use_poly_init),
-        flag_randomPolyTraj, use_formation);
+        flag_randomPolyTraj, use_formation, have_local_traj_);
 
     have_new_target_ = false;
 
@@ -690,6 +710,7 @@ namespace ego_planner
       polyTraj2ROSMsg(msg);
       poly_traj_pub_.publish(msg);
       broadcast_ploytraj_pub_.publish(msg);
+      have_local_traj_ = true;
     }
 
     return plan_success;

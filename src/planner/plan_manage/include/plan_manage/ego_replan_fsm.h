@@ -66,9 +66,10 @@ namespace ego_planner
     bool flag_realworld_experiment_;
     bool enable_fail_safe_;
     int last_end_id_;
+    double replan_trajectory_time_;
 
     /* planning data */
-    bool have_trigger_, have_target_, have_odom_, have_new_target_, have_recv_pre_agent_;
+    bool have_trigger_, have_target_, have_odom_, have_new_target_, have_recv_pre_agent_, have_local_traj_;
     FSM_EXEC_STATE exec_state_;
     int continously_called_times_{0};
 

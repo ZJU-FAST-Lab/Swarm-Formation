@@ -29,6 +29,7 @@
 
     <arg name="obstacle_clearance"      value="0.5"/>
     <arg name="swarm_clearance"         value="0.5"/>
+    <arg name="replan_trajectory_time"  value="0.1"/>
     
     <!-- swarm topic transmitter bridge-->
     <include file="$(find swarm_bridge)/launch/bridge.launch">
@@ -86,6 +87,7 @@
         <arg name="weight_formation"        value="$(arg weight_formation)"/>
         <arg name="obstacle_clearance"      value="$(arg obstacle_clearance)"/>
         <arg name="swarm_clearance"         value="$(arg swarm_clearance)"/>
+        <arg name="replan_trajectory_time"  value="$(arg replan_trajectory_time)"/>
         
     </include>
 
@@ -114,7 +116,8 @@
         <arg name="weight_formation"        value="$(arg weight_formation)"/>
         <arg name="obstacle_clearance"      value="$(arg obstacle_clearance)"/>
         <arg name="swarm_clearance"         value="$(arg swarm_clearance)"/>
-        
+        <arg name="replan_trajectory_time"  value="$(arg replan_trajectory_time)"/>
+
     </include>
 
     <include file="$(find ego_planner)/launch/run_in_sim.launch">
@@ -141,6 +144,7 @@
         <arg name="weight_formation"        value="$(arg weight_formation)"/>
         <arg name="obstacle_clearance"      value="$(arg obstacle_clearance)"/>
         <arg name="swarm_clearance"         value="$(arg swarm_clearance)"/>
+        <arg name="replan_trajectory_time"  value="$(arg replan_trajectory_time)"/>
     </include>
 
     <include file="$(find ego_planner)/launch/run_in_sim.launch">
@@ -167,6 +171,7 @@
         <arg name="weight_formation"        value="$(arg weight_formation)"/>
         <arg name="obstacle_clearance"      value="$(arg obstacle_clearance)"/>
         <arg name="swarm_clearance"         value="$(arg swarm_clearance)"/>
+        <arg name="replan_trajectory_time"  value="$(arg replan_trajectory_time)"/>
 
     </include>
     
@@ -194,6 +199,7 @@
         <arg name="weight_formation"        value="$(arg weight_formation)"/>
         <arg name="obstacle_clearance"      value="$(arg obstacle_clearance)"/>
         <arg name="swarm_clearance"         value="$(arg swarm_clearance)"/>
+        <arg name="replan_trajectory_time"  value="$(arg replan_trajectory_time)"/>
 
     </include>
 
@@ -221,6 +227,7 @@
         <arg name="weight_formation"        value="$(arg weight_formation)"/>
         <arg name="obstacle_clearance"      value="$(arg obstacle_clearance)"/>
         <arg name="swarm_clearance"         value="$(arg swarm_clearance)"/>
+        <arg name="replan_trajectory_time"  value="$(arg replan_trajectory_time)"/>
 
     </include>
 
@@ -248,6 +255,7 @@
         <arg name="weight_formation"        value="$(arg weight_formation)"/>
         <arg name="obstacle_clearance"      value="$(arg obstacle_clearance)"/>
         <arg name="swarm_clearance"         value="$(arg swarm_clearance)"/>
+        <arg name="replan_trajectory_time"  value="$(arg replan_trajectory_time)"/>
 
     </include>
 

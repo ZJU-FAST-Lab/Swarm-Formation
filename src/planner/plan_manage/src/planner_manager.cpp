@@ -173,10 +173,10 @@ namespace ego_planner
   }
 
   bool EGOPlannerManager::reboundReplan(
-      const Eigen::Vector3d &start_pt, const Eigen::Vector3d &start_vel,
-      const Eigen::Vector3d &start_acc, const Eigen::Vector3d &local_target_pt,
-      const Eigen::Vector3d &local_target_vel, const bool flag_polyInit, const bool flag_randomPolyTraj,
-      const bool use_formation)
+      const Eigen::Vector3d &start_pt, const Eigen::Vector3d &start_vel, const Eigen::Vector3d &start_acc, 
+      const double trajectory_start_time, const Eigen::Vector3d &local_target_pt, const Eigen::Vector3d &local_target_vel, 
+      const bool flag_polyInit, const bool flag_randomPolyTraj,
+      const bool use_formation, const bool have_local_traj)
   {
     static int count = 0;
 
@@ -250,7 +250,15 @@ namespace ego_planner
          << ",count_success= " << count_success << endl;
     average_plan_time_ = sum_time / count_success;
 
-    traj_.setLocalTraj(ploy_traj_opt_->getMinJerkOptPtr()->getTraj(), ros::Time::now().toSec()); // todo time
+    if (have_local_traj && use_formation){
+      double delta_replan_time = trajectory_start_time - ros::Time::now().toSec();
+      if (delta_replan_time > 0)
+        ros::Duration(delta_replan_time).sleep();
+      traj_.setLocalTraj(ploy_traj_opt_->getMinJerkOptPtr()->getTraj(), trajectory_start_time);
+    } else {
+      traj_.setLocalTraj(ploy_traj_opt_->getMinJerkOptPtr()->getTraj(), ros::Time::now().toSec()); // todo time
+    }
+    
     visualization_->displayOptimalList(cstr_pts, 0);
 
     // success. YoY

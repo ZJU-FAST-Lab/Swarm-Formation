@@ -30,6 +30,7 @@
     <arg name="weight_formation"/>
     <arg name="obstacle_clearance"/>
     <arg name="swarm_clearance"/>
+    <arg name="replan_trajectory_time"/>
     
     <!-- topic of your odometry such as VIO or LIO -->
     <arg name="odom_topic"/>
@@ -50,6 +51,8 @@
         <arg name="weight_formation"        value="$(arg weight_formation)"/>
         <arg name="obstacle_clearance"      value="$(arg obstacle_clearance)"/>
         <arg name="swarm_clearance"         value="$(arg swarm_clearance)"/>
+        <arg name="replan_trajectory_time"  value="$(arg replan_trajectory_time)"/>
+
         <!-- camera pose: transform of camera frame in the world frame -->
         <!-- depth topic: depth image, 640x480 by default -->
         <!-- don't set cloud_topic if you already set these ones! -->
