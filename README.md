@@ -49,10 +49,34 @@ roslaunch ego_planner normal_hexagon.launch
 Finally, you can see a normal hexagon formation navigating in random forest map.
 
 <p align = "center">
-<img src="fig/normal_hexagon.gif" width = "988" height = "412" border="3" />
+<img src="fig/normal_hexagon_2.gif" width = "800" height = "464" border="3" />
 </p>
 
 If you find this work useful or interesting, please kindly give us a star :star:, thanks!:grinning:
+
+# Tips
+1. We recommend developers to use **[rosmon](http://wiki.ros.org/rosmon)** to replace the **roslaunch**
+- **Why we use rosmon?** : 
+  It is very developer-friendly, especially for the development of multi-robots. 
+- **How to use rosmon?** :
+  [Install](http://wiki.ros.org/rosmon):
+  ```
+  sudo apt install ros-${ROS_DISTRO}-rosmon
+  source /opt/ros/${ROS_DISTRO}/setup.bash # Needed to use the 'mon launch' shortcut
+  ```
+  Run the simple example of our project:
+  ```
+  source devel/setup.bash
+  roslaunch ego_planner rviz.launch
+  ```
+  Then open a new command window in the same workspace and use **rosmon**:
+  ```
+  source devel/setup.bash
+  mon launch ego_planner normal_hexagon.launch
+  ```
+  <p align = "center">
+  <img src="fig/rosmon.jpg" width = "920" height = "412" border="2" />
+  </p>
 
 # Acknowledgements
 **There are several important works which support this project:**
