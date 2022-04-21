@@ -21,40 +21,12 @@ namespace ego_planner
   public:
     int cp_size; // deformation points
     Eigen::MatrixXd points;
-    std::vector<std::vector<Eigen::Vector3d>> base_point; // The point at the statrt of the direction vector (collision point)
-    std::vector<std::vector<Eigen::Vector3d>> direction;  // Direction vector, must be normalized.
-    std::vector<bool> flag_temp;                          // A flag that used in many places. Initialize it everytime before using it.
-
+    
     void resize_cp(const int size_set)
     {
       cp_size = size_set;
 
-      base_point.clear();
-      direction.clear();
-      flag_temp.clear();
-
       points.resize(3, size_set);
-      base_point.resize(cp_size);
-      direction.resize(cp_size);
-      flag_temp.resize(cp_size);
-    }
-    
-    void segment(ConstrainPoints &buf, const int start, const int end)
-    {
-      if (start < 0 || end >= cp_size || points.rows() != 3)
-      {
-        ROS_ERROR("Wrong segment index! start=%d, end=%d", start, end);
-        return;
-      }
-
-      buf.resize_cp(end - start + 1);
-      buf.points = points.block(0, start, 3, end - start + 1);
-      buf.cp_size = end - start + 1;
-      for (int i = start; i <= end; i++)
-      {
-        buf.base_point[i - start] = base_point[i];
-        buf.direction[i - start] = direction[i];
-      }
     }
 
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
