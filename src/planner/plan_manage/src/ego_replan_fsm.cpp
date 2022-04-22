@@ -291,40 +291,73 @@ namespace ego_planner
     const double CLEARANCE = 0.8 * planner_manager_->getSwarmClearance();
     double t_cur_global = ros::Time::now().toSec();
     double t_2_3 = info->duration * 2 / 3;
+    double t_temp;
+    bool occ = false;
     for (double t = t_cur; t < info->duration; t += time_step)
     {
       // If t_cur < t_2_3, only the first 2/3 partition of the trajectory is considered valid and will get checked.
       if (t_cur < t_2_3 && t >= t_2_3)
         break;
 
-      bool occ = false;
-      occ |= map->getInflateOccupancy(info->traj.getPos(t));
-
-      if (occ)
+      if (map->getInflateOccupancy(info->traj.getPos(t)) == 1){
+        ROS_WARN("drone %d is too close to the obstacle at relative time %f!",
+                   planner_manager_->pp_.drone_id, t / info->duration);
+        t_temp = t;
+        occ = true;
+        break;
+      }
+    
+      for (size_t id = 0; id < planner_manager_->traj_.swarm_traj.size(); id++)
       {
-        /* Handle the collided case immediately */
-        ROS_INFO("Try to replan a safe trajectory");
-        if (planFromLocalTraj(true, false)) // Make a chance
+        if ((planner_manager_->traj_.swarm_traj.at(id).drone_id != (int)id) ||
+            (planner_manager_->traj_.swarm_traj.at(id).drone_id == planner_manager_->pp_.drone_id))
         {
-          ROS_INFO("Plan success when detect collision. %f", t / info->duration);
-          changeFSMExecState(EXEC_TRAJ, "SAFETY");
-          return;
+          continue;
+        }
+
+        double t_X = t_cur_global - planner_manager_->traj_.swarm_traj.at(id).start_time;
+        
+        if (t_X > planner_manager_->traj_.swarm_traj.at(id).duration)
+          continue;
+
+        Eigen::Vector3d swarm_pridicted = planner_manager_->traj_.swarm_traj.at(id).traj.getPos(t_X);
+        double dist = (p_cur - swarm_pridicted).norm();
+
+        if (dist < CLEARANCE)
+        {
+          ROS_WARN("swarm distance between drone %d and drone %d is %f, too close!",
+                   planner_manager_->pp_.drone_id, id, dist);
+          t_temp = t;
+          occ = true;
+          break;
+        }
+      }
+    }
+
+    if (occ)
+    {
+      /* Handle the collided case immediately */
+      ROS_INFO("Try to replan a safe trajectory");
+      // if (planFromLocalTraj(true, false)) // Make a chance
+      if (planFromLocalTraj(false, true))
+      {
+        ROS_INFO("Plan success when detect collision.");
+        changeFSMExecState(EXEC_TRAJ, "SAFETY");
+        return;
+      }
+      else
+      {
+        if (t_temp - t_cur < emergency_time_) // 1.0s of emergency time
+        {
+          ROS_WARN("Emergency stop! time=%f", t_temp - t_cur);
+          changeFSMExecState(EMERGENCY_STOP, "SAFETY");
         }
         else
         {
-          if (t - t_cur < emergency_time_) // 0.8s of emergency time
-          {
-            ROS_WARN("Emergency stop! time=%f", t - t_cur);
-            changeFSMExecState(EMERGENCY_STOP, "SAFETY");
-          }
-          else
-          {
-            ROS_WARN("current traj in collision, replan.");
-            changeFSMExecState(REPLAN_TRAJ, "SAFETY");
-          }
-          return;
+          ROS_WARN("current traj in collision, replan.");
+          changeFSMExecState(REPLAN_TRAJ, "SAFETY");
         }
-        break;
+        return;
       }
     }
   }
