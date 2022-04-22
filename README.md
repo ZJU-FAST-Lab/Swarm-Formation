@@ -75,8 +75,8 @@ If you find this work useful or interesting, please kindly give us a star :star:
   source devel/setup.bash
   mon launch ego_planner normal_hexagon.launch
   ```
-  <p align = "center">
-  <img src="fig/rosmon.jpg" width = "920" height = "412" border="2" />
+  <p align = "">
+  <img src="fig/rosmon.jpg" width = "566" height = "379" border="2" />
   </p>
 
 # Acknowledgements
