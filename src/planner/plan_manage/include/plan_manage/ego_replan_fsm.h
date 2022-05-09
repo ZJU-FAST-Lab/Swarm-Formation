@@ -22,7 +22,7 @@
 #include <traj_utils/Assignment.h>
 
 #include <fstream>
-
+#include <iostream>
 using std::vector;
 
 namespace ego_planner
@@ -46,7 +46,8 @@ namespace ego_planner
     enum TARGET_TYPE
     {
       MANUAL_TARGET = 1,
-      PRESET_TARGET = 2
+      PRESET_TARGET ,
+      SWARM_MANUAL_TARGET 
     };
     
     /* planning utils */
@@ -67,6 +68,10 @@ namespace ego_planner
     bool enable_fail_safe_;
     int last_end_id_;
     double replan_trajectory_time_;
+
+     // global goal setting for swarm
+    Eigen::Vector3d swarm_central_pos_;
+    double swarm_relative_pts_[50][3];
 
     /* planning data */
     bool have_trigger_, have_target_, have_odom_, have_new_target_, have_recv_pre_agent_, have_local_traj_;
@@ -93,6 +98,7 @@ namespace ego_planner
     ros::Publisher replan_pub_, new_pub_, poly_traj_pub_, data_disp_pub_, swarm_trajs_pub_, broadcast_bspline_pub_;
     ros::Publisher broadcast_ploytraj_pub_;
     ros::Publisher reached_pub_, start_pub_;
+    ros::Subscriber central_goal;
     ros::Subscriber broadcast_ploytraj_sub_;
     // result file and file name
     string result_fn_;
@@ -119,7 +125,7 @@ namespace ego_planner
     void odometryCallback(const nav_msgs::OdometryConstPtr &msg);
     void RecvBroadcastPolyTrajCallback(const traj_utils::PolyTrajConstPtr &msg);
     void polyTraj2ROSMsg(traj_utils::PolyTraj &msg);
-    
+    void formationWaypointCallback(const geometry_msgs::PoseStampedPtr &msg);
     bool frontEndPathSearching();
     bool checkCollision();
 
@@ -128,6 +134,7 @@ namespace ego_planner
     {
     }
     ~EGOReplanFSM();
+
 
     void init(ros::NodeHandle &nh);
 

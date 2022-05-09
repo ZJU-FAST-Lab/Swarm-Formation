@@ -35,7 +35,7 @@
   <arg name="use_distinctive_trajs"/>
   <arg name="obj_num_set"/>
   <arg name="drone_id"/>
-  <arg name="formation_type"/>
+  <!-- <arg name="formation_type"/>
   <arg name="weight_obstacle"/>
   <arg name="weight_swarm"/>
   <arg name="weight_feasibility"/>
@@ -44,7 +44,7 @@
   <arg name="weight_formation"/>
   <arg name="obstacle_clearance"/>
   <arg name="swarm_clearance"/>
-  <arg name="replan_trajectory_time"/>
+  <arg name="replan_trajectory_time"/> -->
   
   <!-- main node -->
   <!-- <node pkg="ego_planner" name="ego_planner_node" type="ego_planner_node" output="screen" launch-prefix="valgrind"> -->
@@ -64,6 +64,8 @@
     <remap from="~grid_map/pose"   to = "/drone_$(arg drone_id)_$(arg camera_pose_topic)"/> 
     <remap from="~grid_map/depth" to = "/drone_$(arg drone_id)_$(arg depth_topic)"/>
     
+   <rosparam file="$(find ego_planner)/config/normal_hexagon.yaml"/>
+
     <!-- planning fsm -->
     <param name="fsm/flight_type"             value="$(arg flight_type)" type="int"/>
     <param name="fsm/thresh_replan_time"      value="1.0" type="double"/>
@@ -73,7 +75,7 @@
     <param name="fsm/emergency_time"          value="1.0" type="double"/>
     <param name="fsm/realworld_experiment"    value="false"/>
     <param name="fsm/fail_safe"               value="true"/>
-    <param name="fsm/replan_trajectory_time"  value="$(arg replan_trajectory_time)" type="double"/>
+    <!-- <param name="fsm/replan_trajectory_time"  value="$(arg replan_trajectory_time)" type="double"/> -->
 
     <param name="fsm/result_file" value="/home/zuzu/Documents/report/ego_swarm_1.txt"/>
 
@@ -150,7 +152,7 @@
   <!-- trajectory optimization -->
     <param name="optimization/constrain_points_perPiece"    value="3" type="int"/>
     
-    <param name="optimization/weight_obstacle"              value="$(arg weight_obstacle)"/>
+    <!-- <param name="optimization/weight_obstacle"              value="$(arg weight_obstacle)"/>
     <param name="optimization/weight_swarm"                 value="$(arg weight_swarm)"/>
     <param name="optimization/weight_feasibility"           value="$(arg weight_feasibility)"/>
     <param name="optimization/weight_sqrvariance"           value="$(arg weight_sqrvariance)"/>
@@ -158,14 +160,13 @@
     <param name="optimization/weight_formation"             value="$(arg weight_formation)"/>
     
     <param name="optimization/obstacle_clearance"           value="$(arg obstacle_clearance)"/>
-    <param name="optimization/swarm_clearance"              value="$(arg swarm_clearance)"/>
+    <param name="optimization/swarm_clearance"              value="$(arg swarm_clearance)"/> -->
     
     <param name="optimization/max_vel"                      value="$(arg max_vel)" type="double"/>
     <param name="optimization/max_acc"                      value="$(arg max_acc)" type="double"/>
-    <param name="optimization/formation_type"               value="$(arg formation_type)"/>
+    <!-- <param name="optimization/formation_type"               value="$(arg formation_type)"/> -->
     
     <param name="optimization/record_opt" value="true"/>
-
   </node>
 
 </launch>

@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <stdlib.h>
@@ -20,6 +21,7 @@ namespace ego_planner
   {
     // SECTION stable
   public:
+  
     EGOPlannerManager();
     ~EGOPlannerManager();
 

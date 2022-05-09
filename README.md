@@ -8,6 +8,7 @@
 - **Planning** - A more general pipeline for swarm formation navigation in dense environment is on the way.
 - **April 20, 2022** - A robust version [v1.1](https://github.com/ZJU-FAST-Lab/Swarm-Formation/releases/tag/v1.1) has been open-sourced for [ICRA2022](https://arxiv.org/abs/2109.07682).
 - **April 12, 2022** - A distributed swarm formation optizamition framework is released. An example of normal hexagon formation navigation in random forest map is given.
+- **May 9, 2022** -Add Interface: Publish target points through "2D Nav Goal" in rviz for swarm formation navigation.
 
 ## Table of Contents
 * [About](#1-About)
@@ -54,6 +55,14 @@ Then open a new command window in the same workspace and execute the following c
 source devel/setup.bash
 roslaunch ego_planner normal_hexagon.launch
 ```
+You can now use "2D Nav Goal" in rviz to publish the goal for swarm formation navigation.
+
+**Now only two forms are supported to specify the target point.**
+You need to specify the value of **flight_type** in run_in_sim.launch:
+flight_type=3: use 2D Nav Goal to select goal.  
+flight_type=2: use global waypoints.
+
+
 Finally, you can see a normal hexagon formation navigating in random forest map.
 
 <p align = "center">

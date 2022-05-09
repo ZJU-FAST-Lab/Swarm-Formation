@@ -35,29 +35,29 @@
     <!-- topic of your odometry such as VIO or LIO -->
     <arg name="odom_topic"/>
     <!-- number of moving objects -->
-    <arg name="obj_num" value="8" />
+    <!-- <arg name="obj_num" value="8" /> -->
     <!-- main algorithm params -->
     <include file="$(find ego_planner)/launch/advanced_param.xml">
         <arg name="drone_id"                value="$(arg drone_id)"/>
-        <arg name="formation_type"          value="$(arg formation_type)"/>
+        <!-- <arg name="formation_type"          value="$(arg formation_type)"/> -->
         <arg name="map_size_x_"             value="$(arg map_size_x)"/>
         <arg name="map_size_y_"             value="$(arg map_size_y)"/>
         <arg name="map_size_z_"             value="$(arg map_size_z)"/>
-        <arg name="weight_obstacle"         value="$(arg weight_obstacle)"/>
+        <!-- <arg name="weight_obstacle"         value="$(arg weight_obstacle)"/>
         <arg name="weight_swarm"            value="$(arg weight_swarm)"/>
         <arg name="weight_feasibility"      value="$(arg weight_feasibility)"/>
         <arg name="weight_sqrvariance"      value="$(arg weight_sqrvariance)"/>
         <arg name="weight_time"             value="$(arg weight_time)"/>
-        <arg name="weight_formation"        value="$(arg weight_formation)"/>
-        <arg name="obstacle_clearance"      value="$(arg obstacle_clearance)"/>
-        <arg name="swarm_clearance"         value="$(arg swarm_clearance)"/>
-        <arg name="replan_trajectory_time"  value="$(arg replan_trajectory_time)"/>
+        <arg name="weight_formation"        value="$(arg weight_formation)"/> -->
+        <!-- <arg name="obstacle_clearance"      value="$(arg obstacle_clearance)"/> -->
+        <!-- <arg name="swarm_clearance"         value="$(arg swarm_clearance)"/> -->
+        <!-- <arg name="replan_trajectory_time"  value="$(arg replan_trajectory_time)"/> -->
 
         <!-- camera pose: transform of camera frame in the world frame -->
         <!-- depth topic: depth image, 640x480 by default -->
         <!-- don't set cloud_topic if you already set these ones! -->
         <arg name="odometry_topic" value="$(arg odom_topic)"/>
-        <arg name="obj_num_set" value="$(arg obj_num)" />
+        <!-- <arg name="obj_num_set" value="$(arg obj_num)" /> -->
         <arg name="camera_pose_topic" value="pcl_render_node/camera_pose"/>
         <arg name="depth_topic" value="pcl_render_node/depth"/>
         <!-- topic of point cloud measurement, such as from LIDAR  -->
@@ -74,9 +74,10 @@
         <!--always set to 1.5 times grater than sensing horizen-->
         <arg name="planning_horizon" value="7.5" />
         <arg name="use_distinctive_trajs" value="false" />
-        <!-- 1: use 2D Nav Goal to select goal  -->
+        <!-- 3: use 2D Nav Goal to select goal  -->
         <!-- 2: use global waypoints below  -->
-        <arg name="flight_type" value="2" />
+        <!-- need to add -->
+        <arg name="flight_type" value="3" />
         <!-- global waypoints -->
         <!-- It generates a piecewise min-snap traj passing all waypoints -->
         <arg name="point_num" value="1" />

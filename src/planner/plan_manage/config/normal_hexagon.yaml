@@ -1,0 +1,30 @@
+# rectangle formation yaml
+# global goal setting
+global_goal:
+  swarm_central_pos: {x: 25.0, y: 0.0, z: 1.0}
+  swarm_scale : 2.0
+  relative_pos_0 : {x: 0.0, y: 0.0, z: 0.0}
+  relative_pos_1 : {x: 1.7321, y: -1.0, z: 0.0}
+  relative_pos_2 : {x: 0.0, y: -2.0, z: 0.0}
+  relative_pos_3 : {x: -1.7321, y: -1.0, z: 0.0} 
+  relative_pos_4 : {x: -1.7321, y: 1.0, z: 0.0}
+  relative_pos_5 : {x: 0.0, y: 2.0, z: 0.0}
+  relative_pos_6 : {x: 1.7321, y: 1.0, z: 0.0} 
+  # relative_pos_6 : {x: 0, y: 0, z: 0.0} 
+
+# map_size_x          : 70.0
+# map_size_y          : 30.0
+# map_size_z          : 3.0
+optimization:
+  formation_type      : 1
+  weight_obstacle     : 50000.0
+  weight_swarm        : 50000.0
+  weight_feasibility  : 10000.0
+  weight_sqrvariance  : 10000.0
+  weight_time         : 80.0
+  weight_formation    : 15000.0
+  obstacle_clearance  : 0.5
+  swarm_clearance     : 0.5
+
+fsm:
+  replan_trajectory_time : 0.1    # s, the max time of replanning trajectory

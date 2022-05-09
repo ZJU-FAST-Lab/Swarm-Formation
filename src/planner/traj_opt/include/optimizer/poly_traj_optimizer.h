@@ -86,7 +86,7 @@ namespace ego_planner
     double t_now_;
 
   public:
-    
+
     PolyTrajOptimizer() {}
     ~PolyTrajOptimizer() {}
 
@@ -114,6 +114,8 @@ namespace ego_planner
                            std::vector<Eigen::Vector3d> &simple_path,
                            Eigen::MatrixXd &ctl_points,
                            poly_traj::MinJerkOpt &frontendMJ);
+  
+  
   
   private:
     /* callbacks by the L-BFGS optimizer */
@@ -225,6 +227,8 @@ namespace ego_planner
     }
 
   public:
+
+
     typedef unique_ptr<PolyTrajOptimizer> Ptr;
 
   };
