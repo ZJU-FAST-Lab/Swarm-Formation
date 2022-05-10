@@ -56,6 +56,10 @@ source devel/setup.bash
 roslaunch ego_planner normal_hexagon.launch
 ```
 Then use **"2D Nav Goal"** in rviz to publish the goal for swarm formation navigation. You need to specify the value of **flight_type** in run_in_sim.launch:
+<p align = "center">
+<img src="fig/set_goal_normal_hexagon.gif" width = "800" height = "363" border="2" />
+</p>
+
 **Now only two forms are supported to specify the target point.**
 - flight_type = 2: use global waypoints
 - flight_type = 3: use "2D Nav Goal" to select goal  
@@ -63,7 +67,7 @@ Then use **"2D Nav Goal"** in rviz to publish the goal for swarm formation navig
 Finally, you can see a normal hexagon formation navigating in random forest map.
 
 <p align = "center">
-<img src="fig/normal_hexagon_2.gif" width = "800" height = "464" border="3" />
+<img src="fig/normal_hexagon_2.gif" width = "800" height = "464" border="2" />
 </p>
 
 If you find this work useful or interesting, please kindly give us a star :star:, thanks!:grinning:
@@ -88,7 +92,7 @@ If you find this work useful or interesting, please kindly give us a star :star:
   source devel/setup.bash
   mon launch ego_planner normal_hexagon.launch
   ```
-  <p align = "">
+  <p align = "center">
   <img src="fig/rosmon.jpg" width = "566" height = "379" border="2" />
   </p>
 
