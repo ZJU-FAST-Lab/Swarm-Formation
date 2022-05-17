@@ -6,17 +6,16 @@
 
 ## News
 - **Planning** - A more general pipeline for swarm formation navigation in dense environment is on the way.
-- **May 9, 2022** -Add Interface: Publish target points through "2D Nav Goal" in rviz for swarm formation navigation.
 - **April 20, 2022** - A robust version [v1.1](https://github.com/ZJU-FAST-Lab/Swarm-Formation/releases/tag/v1.1) has been open-sourced for [ICRA2022](https://arxiv.org/abs/2109.07682).
-- **April 12, 2022** - A distributed swarm formation optizamition framework is released. An example of normal hexagon formation navigation in random forest map is given.
 
 ## Table of Contents
 * [About](#1-About)
 * [Quick Start within 3 Minutes](#2-Quick-Start-within-3-Minutes)
 * [Tips](#3-Tips)
-* [Acknowledgements](#4-Acknowledgements)
-* [Licence](#5-Licence)
-* [Maintenance](#6-Maintenance)
+* [Important updates](#4-Important-updates)
+* [Acknowledgements](#5-Acknowledgements)
+* [Licence](#6-Licence)
+* [Maintenance](#7-Maintenance)
 
 ## 1. About
 If our source code is used in your academic projects, please cite our paper. Thank you!
@@ -96,16 +95,20 @@ If you find this work useful or interesting, please kindly give us a star :star:
   <img src="fig/rosmon.jpg" width = "566" height = "379" border="2" />
   </p>
 
-## 4. Acknowledgements
+## 4. Important updates
+- **May 9, 2022** -Add Interface: Publish target points through "2D Nav Goal" in rviz for swarm formation navigation.
+- **April 12, 2022** - A distributed swarm formation optizamition framework is released. An example of normal hexagon formation navigation in random forest map is given.
+
+## 5. Acknowledgements
 **There are several important works which support this project:**
 - [GCOPTER](https://github.com/ZJU-FAST-Lab/GCOPTER): An efficient and versatile multicopter trajectory optimizer built upon a novel sparse trajectory representation named [MINCO](https://arxiv.org/pdf/2103.00190v2.pdf).
 - [LBFGS-Lite](https://github.com/ZJU-FAST-Lab/LBFGS-Lite): An Easy-to-Use Header-Only L-BFGS Solver.
 - [EGO-Swarm](https://github.com/ZJU-FAST-Lab/ego-planner-swarm): A Fully Autonomous and Decentralized Quadrotor Swarm System in Cluttered Environments.
 
-## 5. Licence
+## 6. Licence
 The source code is released under [GPLv3](https://www.gnu.org/licenses/) license.
 
-## 6. Maintenance
+## 7. Maintenance
 We are still working on extending the proposed system and improving code reliability.
 
 For any technical issues, please contact Lun Quan (lunquan@zju.edu.cn) or Fei Gao (fgaoaa@zju.edu.cn).
