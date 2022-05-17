@@ -63,8 +63,6 @@ namespace ego_planner
     planner_manager_->deliverTrajToOptimizer(); // store trajectories
     planner_manager_->setDroneIdtoOpt();
 
- 
-
     /* callback */
     exec_timer_ = nh.createTimer(ros::Duration(0.01), &EGOReplanFSM::execFSMCallback, this);
     safety_timer_ = nh.createTimer(ros::Duration(0.05), &EGOReplanFSM::checkCollisionCallback, this);
@@ -302,7 +300,7 @@ namespace ego_planner
     Eigen::Vector3d p_cur = info->traj.getPos(t_cur);
     const double CLEARANCE = 0.8 * planner_manager_->getSwarmClearance();
     double t_cur_global = ros::Time::now().toSec();
-    double t_2_3 = info->duration * 2 / 3;
+    double t_2_3 = info->duration * 3 / 5;
     double t_temp;
     bool occ = false;
     for (double t = t_cur; t < info->duration; t += time_step)
@@ -351,8 +349,8 @@ namespace ego_planner
     {
       /* Handle the collided case immediately */
       ROS_INFO("Try to replan a safe trajectory");
-      // if (planFromLocalTraj(true, false)) // Make a chance
-      if (planFromLocalTraj(false, true))
+      if (planFromLocalTraj(true, false)) // Make a chance
+      // if (planFromLocalTraj(false, true))
       {
         ROS_INFO("Plan success when detect collision.");
         changeFSMExecState(EXEC_TRAJ, "SAFETY");

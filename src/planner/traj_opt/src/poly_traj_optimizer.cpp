@@ -75,7 +75,7 @@ namespace ego_planner
 
     // test collision
     bool occ = false;
-    occ = checkCollision();
+    // occ = checkCollision();
 
     use_formation_ = use_formation_temp;
 
@@ -83,7 +83,7 @@ namespace ego_planner
     double time_ms = (t2 - t1).toSec() * 1000;
     double total_time_ms = (t2 - t0).toSec() * 1000;
 
-    printf("\033[32miter=%d,time(ms)=%5.3f, \n\033[0m", iter_num_, time_ms);
+    printf("\033[32miter=%d, use_formation=%d, time(ms)=%5.3f, \n\033[0m", iter_num_, use_formation, time_ms);
     // ROS_WARN("The optimization result is : %s", lbfgs::lbfgs_strerror(result));
     optimal_points = cps_.points;
 
