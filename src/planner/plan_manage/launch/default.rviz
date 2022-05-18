@@ -72,7 +72,7 @@ Panels:
         - /drone101/Simulation1
         - /drone101/Simulation1/robot1
       Splitter Ratio: 0.45006656646728516
-    Tree Height: 1240
+    Tree Height: 435
   - Class: rviz/Selection
     Name: Selection
   - Class: rviz/Tool Properties
@@ -1633,9 +1633,9 @@ Visualization Manager:
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -3.8118350505828857
-        Y: 2.5130908489227295
-        Z: 2.712498188018799
+        X: -2.460771083831787
+        Y: 3.1855945587158203
+        Z: 2.711850881576538
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false

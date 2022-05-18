@@ -21,7 +21,7 @@
         <param name="map/resolution" value="0.1"/>        
         <param name="ObstacleShape/seed" value="1"/>
         
-        <param name="map/obs_num"    value="160"/>
+        <param name="map/obs_num"    value="60"/>
         <param name="ObstacleShape/lower_rad" value="0.5"/>
         <param name="ObstacleShape/upper_rad" value="0.5"/>
         <param name="ObstacleShape/lower_hei" value="2.0"/>

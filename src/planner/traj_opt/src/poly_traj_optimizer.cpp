@@ -75,7 +75,7 @@ namespace ego_planner
 
     // test collision
     bool occ = false;
-    // occ = checkCollision();
+    occ = checkCollision();
 
     use_formation_ = use_formation_temp;
 
@@ -97,21 +97,31 @@ namespace ego_planner
 
   bool PolyTrajOptimizer::checkCollision(void)
   {
-    // only check the 2/3 of trajectory
+    /* check the safety of trajectory */
+    double T_end;
+    poly_traj::Trajectory traj = jerkOpt_.getTraj();
+    
+    int N = traj.getPieceNum();
+    int k = cps_num_prePiece_ * N + 1;
+    int idx = k / 3 * 2;
+    int piece_of_idx = floor((idx - 1) / cps_num_prePiece_);
+    Eigen::VectorXd durations = traj.getDurations();
+    T_end = durations.head(piece_of_idx).sum() 
+            + durations(piece_of_idx) * (idx - piece_of_idx * cps_num_prePiece_) / cps_num_prePiece_;
+
     bool occ = false;
     double dt = 0.01;
-    poly_traj::Trajectory traj = jerkOpt_.getTraj();
-    double T_all = traj.getTotalDuration();
-    int i_end = round(T_all / dt) * 3 / 5;
+    int i_end = floor(T_end/dt);
     double t = 0.0;
+    collision_check_time_end_ = T_end;
 
-    for (int i = 0; i < i_end; i++)
-    {
+    for (int i=0; i<i_end; i++){
       Eigen::Vector3d pos = traj.getPos(t);
-      occ = grid_map_->getInflateOccupancy(pos);
-      t += dt;
-      if (occ)
+      if(grid_map_->getInflateOccupancy(pos) == 1){
+        occ = true;
         break;
+      }
+      t += dt;
     }
     return occ;
   }

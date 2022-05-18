@@ -56,6 +56,8 @@ namespace ego_planner
       nh.param("global_goal/relative_pos_" + to_string(i) + "/z", swarm_relative_pts_[i][2], -1.0);
     }
 
+    nh.param("global_goal/swarm_scale", swarm_scale_, 1.0);
+
     /* initialize main modules */
     visualization_.reset(new PlanningVisualization(nh));
     planner_manager_.reset(new EGOPlannerManager);
@@ -300,7 +302,7 @@ namespace ego_planner
     Eigen::Vector3d p_cur = info->traj.getPos(t_cur);
     const double CLEARANCE = 0.8 * planner_manager_->getSwarmClearance();
     double t_cur_global = ros::Time::now().toSec();
-    double t_2_3 = info->duration * 3 / 5;
+    double t_2_3 = planner_manager_->ploy_traj_opt_->getCollisionCheckTimeEnd();
     double t_temp;
     bool occ = false;
     for (double t = t_cur; t < info->duration; t += time_step)
@@ -643,9 +645,9 @@ namespace ego_planner
 
     Eigen::Vector3d relative_pos;
     relative_pos << swarm_relative_pts_[id][0],
-        swarm_relative_pts_[id][1],
-        swarm_relative_pts_[id][2];
-    end_pt_ = swarm_central_pos_ + relative_pos;
+                    swarm_relative_pts_[id][1],
+                    swarm_relative_pts_[id][2];
+    end_pt_ = swarm_central_pos_ + swarm_scale_ * relative_pos;
 
     std::vector<Eigen::Vector3d> one_pt_wps;
     one_pt_wps.push_back(end_pt_);
