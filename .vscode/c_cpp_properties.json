@@ -1,0 +1,29 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "",
+        "limitSymbolsToIncludedHeaders": true
+      },
+      "includePath": [
+        "/home/lunquan/paper_ws/icra2022_ws/open-source/Swarm-Formation/devel/include/**",
+        "/opt/ros/melodic/include/**",
+        "/home/lunquan/paper_ws/icra2022_ws/open-source/Swarm-Formation/src/planner/plan_manage/include/**",
+        "/home/lunquan/paper_ws/icra2022_ws/open-source/Swarm-Formation/src/uav_simulator/mockamap/include/**",
+        "/home/lunquan/paper_ws/icra2022_ws/open-source/Swarm-Formation/src/planner/path_searching/include/**",
+        "/home/lunquan/paper_ws/icra2022_ws/open-source/Swarm-Formation/src/planner/plan_env/include/**",
+        "/home/lunquan/paper_ws/icra2022_ws/open-source/Swarm-Formation/src/Utils/pose_utils/include/**",
+        "/home/lunquan/paper_ws/icra2022_ws/open-source/Swarm-Formation/src/Utils/quadrotor_msgs/include/**",
+        "/home/lunquan/paper_ws/icra2022_ws/open-source/Swarm-Formation/src/uav_simulator/so3_control/include/**",
+        "/home/lunquan/paper_ws/icra2022_ws/open-source/Swarm-Formation/src/uav_simulator/so3_quadrotor_simulator/include/**",
+        "/home/lunquan/paper_ws/icra2022_ws/open-source/Swarm-Formation/src/planner/swarm_graph/include/**",
+        "/home/lunquan/paper_ws/icra2022_ws/open-source/Swarm-Formation/src/planner/traj_opt/include/**",
+        "/home/lunquan/paper_ws/icra2022_ws/open-source/Swarm-Formation/src/planner/traj_utils/include/**",
+        "/home/lunquan/paper_ws/icra2022_ws/open-source/Swarm-Formation/src/Utils/uav_utils/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS"
+    }
+  ],
+  "version": 4
+}

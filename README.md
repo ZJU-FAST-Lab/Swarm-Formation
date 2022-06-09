@@ -18,11 +18,10 @@
 * [Maintenance](#7-Maintenance)
 
 ## 1. About
-If our source code is used in your academic projects, please cite our paper. Thank you!
-
 **Author**: [Lun Quan*](http://zju-fast.com/lun-quan/), [Longji Yin*](http://zju-fast.com/longji-yin/), [Chao Xu](http://zju-fast.com/research-group/chao-xu/), and [Fei Gao](http://zju-fast.com/research-group/fei-gao/), from [Fast-Lab](http://zju-fast.com/),Zhejiang University.
 
 **Paper**: [Distributed Swarm Trajectory Optimization for Formation Flight in Dense Environments](https://arxiv.org/abs/2109.07682), Lun Quan*, Longji Yin*, Chao Xu, and Fei Gao. Accpted in [ICRA2022](https://www.icra2022.org/).
+
 ```
 @article{quan2021distributed,
       title={Distributed Swarm Trajectory Optimization for Formation Flight in Dense Environments}, 
@@ -31,13 +30,15 @@ If our source code is used in your academic projects, please cite our paper. Tha
       year={2021}
 }
 ```
-Video Links: [Bilibili](https://www.bilibili.com/video/BV1qv41137Si?spm_id_from=333.999.0.0) (only for Mainland China) or [Youtube](https://www.youtube.com/watch?v=lFumt0rJci4).
+If our source code is used in your academic projects, please cite our paper. Thank you!
 
 <a href="https://www.youtube.com/watch?v=lFumt0rJci4" target="blank">
   <p align="center">
     <img src="fig/post.jpg" width="600"/>
   </p>
 </a>
+
+Video Links: [Bilibili](https://www.bilibili.com/video/BV1qv41137Si?spm_id_from=333.999.0.0) (only for Mainland China) or [Youtube](https://www.youtube.com/watch?v=lFumt0rJci4).
 
 ## 2. Quick Start within 3 Minutes
 Compiling tests passed on ubuntu 18.04 and 20.04 with ros installed. You can just execute the following commands one by one.
