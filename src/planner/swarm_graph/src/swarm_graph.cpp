@@ -82,7 +82,8 @@ bool SwarmGraph::calcMatrices( const std::vector<Eigen::Vector3d> &swarm,
 }
 
 double SwarmGraph::calcDist2( const Eigen::Vector3d &v1, const Eigen::Vector3d &v2){
-    return (v1-v2).norm(); 
+    return (v1-v2).cwiseAbs2().sum();
+    
 }
 
 
