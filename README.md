@@ -5,7 +5,7 @@
 - A spatial-temporal optimization framework with a joint cost function that takes formation similarity, obstacle avoidance, and dynamic feasibility into account, which makes the swarm robots possess the ability to move in formation while avoiding obstacles.
 
 ## News
-- **October 9, 2022** - An improved version which ahieves fully autonomous large-scale formation flight in dense environments with a complete formation flight system has been submitted to IEEE Transactions on Robotics [Preprint](https://arxiv.org/abs/2210.04048).
+- **October 9, 2022** - An improved version which achieves fully autonomous large-scale formation flight in dense environments with a complete formation navigation system has been submitted to IEEE Transactions on Robotics [Preprint](https://arxiv.org/abs/2210.04048).
 - **April 20, 2022** - A robust version [v1.1](https://github.com/ZJU-FAST-Lab/Swarm-Formation/releases/tag/v1.1) has been open-sourced for [ICRA2022](https://arxiv.org/abs/2109.07682).
 
 ## Table of Contents
