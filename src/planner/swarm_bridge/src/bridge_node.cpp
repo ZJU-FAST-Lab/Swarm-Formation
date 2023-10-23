@@ -224,7 +224,7 @@ void udp_recv_fun()
 
     default:
 
-      ROS_ERROR("Unknown received message tyoe???");
+      ROS_ERROR("Unknown received message type???");
 
       break;
     }
