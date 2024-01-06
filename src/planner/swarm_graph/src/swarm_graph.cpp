@@ -143,7 +143,7 @@ bool SwarmGraph::calcFGrad( Eigen::Vector3d &gradp, int idx ){
         }else{
             gradp = Eigen::VectorXd::Zero(3);
         }
-
+        return true;
     }else{
         ROS_WARN( "Invalid desired formation." );
         return false;
