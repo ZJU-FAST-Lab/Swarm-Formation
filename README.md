@@ -71,6 +71,25 @@ Finally, you can see a normal hexagon formation navigating in random forest map.
 </p>
 
 If you find this work useful or interesting, please kindly give us a star :star:, thanks!:grinning:
+### 2.1 Quick Start with Docker
+If your operating system doesn't support ROS noetic, docker is a great alternative.
+
+First of all, you have to build the project and create an image like so:
+```bash
+## Assuimg you are in the correct project directory
+make docker_build
+```
+After the image is created, copy and paste the following command to the terminal to run the image:
+
+```bash
+xhost +
+make docker_run
+```
+Then execute the following command;
+
+```
+roslaunch ego_planner normal_hexagon.launch
+```
 
 ## 3. Tips
 1. We recommend developers to use **[rosmon](http://wiki.ros.org/rosmon)** to replace the **roslaunch**
